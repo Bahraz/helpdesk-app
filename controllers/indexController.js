@@ -36,8 +36,25 @@ exports.postUserCreate = (req, res) =>
   });
 exports.postUserEdit = (req, res) => res.redirect("/profile");
 
+exports.postTicketReply = (req, res) => {
+  const action = req.body.action;
+
+  if (action === "close") {
+    res.render("index", {
+      user: mockAdmin,
+      page: "pages/admin/ticket-close-success",
+    });
+  } else {
+    res.redirect("/tickets/detail");
+  }
+};
+
 exports.getLogin = (req, res) => {
   res.render("index", { page: "auth/login", error: null });
+};
+
+exports.getLogout = (req, res) => {
+  res.render("index", { page: "auth/logout-success" });
 };
 
 exports.getRegister = (req, res) => {

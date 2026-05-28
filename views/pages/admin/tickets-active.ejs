@@ -8,19 +8,7 @@
   <h2 style="margin-bottom: 2rem;">Zgłoszenia pod Twoją obsługą</h2>
   <div class="ticket-grid">
     <% mockTickets.forEach(ticket => { %>
-      <div class="ticket-card" style="border-color: var(--primary-glow);">
-        <div class="ticket-meta">
-          <span class="ticket-id">#T-<%= ticket.id %></span>
-          <span class="ticket-time"><i class="fa-regular fa-clock"></i> <%= ticket.czas_zalozenia %></span>
-        </div>
-        <div class="ticket-title"><%= ticket.tytul %></div>
-        <div class="ticket-desc"><%= ticket.opis %></div>
-        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;"><i class="fa-solid fa-user"></i> <%= ticket.tworca_nazwa %></div>
-        <div class="ticket-footer" style="margin-top: auto;">
-          <span class="status-badge"><i class="fa-solid fa-spinner"></i> <%= ticket.status %></span>
-          <a href="/tickets/detail" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Odpowiedz</a>
-        </div>
-      </div>
+      <%- include('../../partials/ticket-card', { ticket: ticket, type: 'active' }) %>
     <% }) %>
   </div>
 </main>

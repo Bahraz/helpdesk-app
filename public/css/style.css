@@ -625,6 +625,11 @@ body {
   margin-bottom: 2rem;
 }
 
+.ticket-title.is-closed {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
 .conversation-thread {
   display: flex;
   flex-direction: column;

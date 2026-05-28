@@ -1,14 +1,28 @@
-<%- include('header') %>
-<div style="text-align: center; padding: 60px 20px">
-  <div style="font-size: 4rem; margin-bottom: 20px">⚠️</div>
-  <h2 style="color: var(--text-main); font-size: 2rem; margin-bottom: 15px">
-    <%= message %>
-  </h2>
-  <p style="color: var(--text-muted); margin-bottom: 30px">
-    Przepraszamy, ale coś poszło nie tak. Spróbuj ponownie lub wróć do panelu
-    zgłoszeń.
-  </p>
-  <a href="/" class="btn btn-primary">Wróć do strony głównej</a>
-</div>
-
-<%- include('footer') %>
+<!DOCTYPE html>
+<html lang="pl">
+  <%- include('head') %>
+  <body>
+    <div class="ambient-light"></div>
+    <main
+      style="
+        padding: 6rem 12.5%;
+        text-align: center;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <h1 style="font-size: 4rem; color: #ef4444; margin-bottom: 1rem">
+        <i class="fa-solid fa-triangle-exclamation"></i> Błąd
+      </h1>
+      <p
+        style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem"
+      >
+        <%= message %>
+      </p>
+      <a href="/" class="btn btn-primary">Wróć na stronę główną</a>
+    </main>
+  </body>
+</html>

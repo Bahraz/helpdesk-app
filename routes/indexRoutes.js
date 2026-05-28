@@ -5,6 +5,7 @@ const router = express.Router();
 router.get("/", indexController.getHome);
 router.get("/auth/login", indexController.getLogin);
 router.get("/auth/register", indexController.getRegister);
+router.get("/logout", indexController.getLogout);
 
 router.get("/tickets/pending", indexController.getTicketsPending);
 router.get("/tickets/active", indexController.getTicketsActive);
@@ -16,5 +17,6 @@ router.get("/admin/users/edit", indexController.getUserEdit);
 router.get("/admin/users/reset-password", indexController.getUserResetPassword);
 router.post("/admin/users/new", indexController.postUserCreate);
 router.post("/admin/users/edit", indexController.postUserEdit);
+router.post("/tickets/:id/reply", indexController.postTicketReply);
 
 module.exports = router;
