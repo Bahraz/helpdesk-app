@@ -1,11 +1,12 @@
-const db = require('./config/database');
+require("dotenv").config();
+const db = require("./config/database");
 
 async function initializeDB() {
-    try {
-        await db.execute('DROP TABLE IF EXISTS tickets');
-        await db.execute('DROP TABLE IF EXISTS users');
+  try {
+    await db.execute("DROP TABLE IF EXISTS tickets");
+    await db.execute("DROP TABLE IF EXISTS users");
 
-        await db.execute(`
+    await db.execute(`
             CREATE TABLE users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 first_name VARCHAR(50) NOT NULL,
@@ -20,7 +21,7 @@ async function initializeDB() {
             )
         `);
 
-        await db.execute(`
+    await db.execute(`
             CREATE TABLE tickets (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 title VARCHAR(100) NOT NULL,
@@ -32,12 +33,12 @@ async function initializeDB() {
             )
         `);
 
-        console.log("Struktura bazy danych została zaktualizowana!");
-        process.exit(0);
-    } catch (error) {
-        console.error("Błąd bazy danych:", error);
-        process.exit(1);
-    }
+    console.log("Struktura bazy danych została zaktualizowana!");
+    process.exit(0);
+  } catch (error) {
+    console.error("Błąd bazy danych:", error);
+    process.exit(1);
+  }
 }
 
 initializeDB();
