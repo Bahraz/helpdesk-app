@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <%- include('partials/head') %>
+  <body>
+    <div class="ambient-light"></div>
+    <%- include('partials/header') %>
+
+    <% if (typeof page !== 'undefined') { %>
+      <%- include(page) %>
+    <% } else if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+      <%- include('pages/admin/dashboard') %>
+    <% } else if (typeof user !== 'undefined' && user && user.role === 'user') { %>
+      <%- include('pages/user/dashboard') %>
+    <% } else { %>
+      <%- include('pages/home') %>
+    <% } %>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>

@@ -1,34 +1,27 @@
-<!DOCTYPE html>
-<html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Helpdesk IT</title>
-    <link rel="stylesheet" href="/css/style.css" />
-  </head>
-  <body>
-    <header class="main-header">
-      <div class="container header-content">
-        <div class="logo">
-          <a href="/tickets">
-            <span class="logo-icon">🛠️</span>
-            <span class="logo-text">Helpdesk IT</span>
-          </a>
-        </div>
-        <nav class="main-nav">
-          <ul>
-            <li><a href="/tickets">Zgłoszenia</a></li>
-            <li><a href="/tickets/create">Nowe zgłoszenie</a></li>
-            <li><a href="/auth/login" class="btn btn-outline">Zaloguj</a></li>
-            <li>
-              <a href="/auth/register" class="btn btn-primary">Zarejestruj</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-    <!-- Główny kontener na zawartość stron (np. login.ejs, index.ejs) -->
-    <main class="container main-content"></main>
-  </body>
-</html>
+<header class="navbar">
+    <a href="/" class="logo">
+      <i class="fa-solid fa-layer-group"></i> Help<span>Desk</span>
+    </a>
+    <nav class="nav-links">
+      <% if (typeof user !== 'undefined' && user) { %>
+        <% if (user.role === 'admin') { %>
+          <a href="/tickets/pending">Oczekujące</a>
+          <a href="/tickets/active">Przyjęte</a>
+          <a href="/tickets/closed">Zamknięte</a>
+          <a href="/profile">Użytkownicy</a>
+          <a href="/logout" class="btn btn-outline">Wyloguj</a>
+        <% } else if (user.role === 'user') { %>
+          <a href="/#">Zgłoś</a>
+          <a href="/#">Moje zgłoszenia</a>
+          <a href="/#">Mój profil</a>
+          <a href="/logout" class="btn btn-outline">Wyloguj</a>
+        <% } %>
+      <% } else { %>
+        <a href="#function">Jak to działa</a>
+        <a href="#why-us">Dlaczego my?</a>
+        <a href="#offer">Oferta</a>
+        <a href="#join-us">Dołącz do nas</a>
+        <a href="/auth/login" class="btn btn-outline"><i class="fa-solid fa-arrow-right-to-bracket" style="margin-right: 6px;"></i>Zaloguj się</a>
+      <% } %>
+    </nav>
+  </header>

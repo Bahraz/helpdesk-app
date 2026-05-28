@@ -1,0 +1,26 @@
+<%
+  const mockTickets = [
+    { id: 90, tytul: "Brak internetu", opis: "Switch na 3 piętrze został zresetowany, internet już działa.", status: "Zakończone", tworca_nazwa: "Biuro", czas_zalozenia: "Wtorek" },
+    { id: 85, tytul: "Dostęp do GitHuba", opis: "Uprawnienia zostały nadane.", status: "Zakończone", tworca_nazwa: "Dev Team", czas_zalozenia: "Poniedziałek" }
+  ];
+%>
+<main style="padding: 4rem 12.5%; min-height: 80vh;">
+  <h2 style="margin-bottom: 2rem;">Archiwum zgłoszeń</h2>
+  <div class="ticket-grid">
+    <% mockTickets.forEach(ticket => { %>
+      <div class="ticket-card" style="opacity: 0.8;">
+        <div class="ticket-meta">
+          <span class="ticket-id">#T-<%= ticket.id %></span>
+          <span class="ticket-time"><i class="fa-regular fa-clock"></i> <%= ticket.czas_zalozenia %></span>
+        </div>
+        <div class="ticket-title" style="color: var(--text-muted);"><strike><%= ticket.tytul %></strike></div>
+        <div class="ticket-desc"><%= ticket.opis %></div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;"><i class="fa-solid fa-user"></i> <%= ticket.tworca_nazwa %></div>
+        <div class="ticket-footer" style="margin-top: auto;">
+          <span class="badge" style="background: rgba(34, 197, 94, 0.15); color: #22c55e; margin: 0; padding: 0.5rem 1rem;"><i class="fa-solid fa-check"></i> <%= ticket.status %></span>
+          <a href="/tickets/detail" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Odpowiedz</a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</main>

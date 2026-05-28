@@ -5,6 +5,7 @@ const path = require("path");
 
 const authRoutes = require("./routes/authRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
+const indexRoutes = require("./routes/indexRoutes");
 
 const app = express();
 
@@ -24,8 +25,7 @@ app.use(
 
 app.use("/auth", authRoutes);
 app.use("/tickets", ticketRoutes);
-
-app.get("/", (req, res) => res.redirect("/tickets"));
+app.use("/", indexRoutes);
 
 app.use((req, res) => {
   res

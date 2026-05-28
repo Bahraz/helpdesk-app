@@ -1,0 +1,92 @@
+<main class="auth-section">
+  <div class="auth-card" style="max-width: 600px; text-align: left">
+    <h2 style="text-align: center; margin-bottom: 1.5rem">
+      Edycja pracownika #2
+    </h2>
+    <p style="text-align: center; margin-bottom: 2rem">
+      Zmień dane pracownika, przypisz mu nową rolę lub zablokuj dostęp do
+      systemu.
+    </p>
+
+    <form action="/admin/users/edit" method="POST">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+        <div class="form-group">
+          <label>Imię</label>
+          <input type="text" class="form-control" required value="Anna" />
+        </div>
+        <div class="form-group">
+          <label>Nazwisko</label>
+          <input type="text" class="form-control" required value="Kowalska" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Adres E-mail</label>
+        <input
+          type="email"
+          class="form-control"
+          required
+          value="a.kowalska@firma.pl"
+        />
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem">
+        <div class="form-group">
+          <label>Dział</label>
+          <input type="text" class="form-control" required value="HR" />
+        </div>
+        <div class="form-group">
+          <label>Rola</label>
+          <select class="form-control" style="appearance: auto">
+            <option value="user" selected>Użytkownik</option>
+            <option value="admin">Administrator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-control" style="appearance: auto">
+            <option value="1" selected>Aktywny</option>
+            <option value="0">Zablokowany</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-top: 2rem">
+        <a
+          href="/admin/users/reset-password"
+          class="btn btn-outline"
+          style="
+            flex: 1;
+            color: #eab308;
+            border-color: rgba(234, 179, 8, 0.4);
+            text-align: center;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+          "
+        >
+          <i class="fa-solid fa-key"></i> Zresetuj hasło
+        </a>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="flex: 1; padding: 0.6rem 1rem; font-size: 0.9rem"
+        >
+          Zapisz zmiany
+          <i class="fa-solid fa-check" style="margin-left: 6px"></i>
+        </button>
+      </div>
+      <div style="text-align: center; margin-top: 1rem">
+        <a
+          href="/profile"
+          style="
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+          "
+        >
+          <i class="fa-solid fa-arrow-left"></i> Anuluj i wróć do profilu
+        </a>
+      </div>
+    </form>
+  </div>
+</main>

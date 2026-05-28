@@ -1,33 +1,22 @@
-<%- include('../partials/header') %>
+<main class="auth-section">
+  <div class="auth-card">
+    <h2>Zaloguj się</h2>
+    <p>Uzyskaj dostęp do swojego panelu HelpDesk</p>
 
-<div class="auth-container">
-    <div class="auth-card">
-        <div class="auth-header">
-            <h2>Logowanie do systemu</h2>
-            <p>Wprowadź swoje dane służbowe.</p>
-        </div>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert"><i class="fa-solid fa-circle-exclamation"></i> <%= error %></div>
+    <% } %>
 
-        <% if (error) { %>
-            <div class="alert alert-danger"><%= error %></div>
-        <% } %>
-
-        <form action="/auth/login" method="POST">
-            <div class="form-group">
-                <label>Służbowy adres e-mail</label>
-                <input type="email" name="email" class="form-control" required autofocus>
-            </div>
-            
-            <div class="form-group">
-                <label>Hasło</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-block">Zaloguj się</button>
-        </form>
-        <p class="auth-footer-text">
-            Brak konta? <a href="/auth/register">Zarejestruj się</a>
-        </p>
-    </div>
-</div>
-
-<%- include('../partials/footer') %>
+    <form action="/auth/login" method="POST">
+      <div class="form-group">
+        <label for="email">Adres e-mail</label>
+        <input type="email" id="email" name="email" class="form-control" required placeholder="twoj.email@firma.pl">
+      </div>
+      <div class="form-group">
+        <label for="password">Hasło</label>
+        <input type="password" id="password" name="password" class="form-control" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary auth-btn">Zaloguj się <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 6px;"></i></button>
+    </form>
+  </div>
+</main>
