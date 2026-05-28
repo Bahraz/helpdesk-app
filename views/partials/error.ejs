@@ -1,0 +1,14 @@
+<%- include('header') %>
+<div style="text-align: center; padding: 60px 20px">
+  <div style="font-size: 4rem; margin-bottom: 20px">⚠️</div>
+  <h2 style="color: var(--text-main); font-size: 2rem; margin-bottom: 15px">
+    <%= message %>
+  </h2>
+  <p style="color: var(--text-muted); margin-bottom: 30px">
+    Przepraszamy, ale coś poszło nie tak. Spróbuj ponownie lub wróć do panelu
+    zgłoszeń.
+  </p>
+  <a href="/tickets" class="btn btn-primary">Wróć do strony głównej</a>
+</div>
+
+<%- include('footer') %>

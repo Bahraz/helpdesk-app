@@ -1,0 +1,278 @@
+/* Zmienne globalne - Kolorystyka Helpdesku */
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --bg-color: #f8fafc;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --white: #ffffff;
+}
+
+/* Reset i podstawa */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Zapewnia, że stopka jest zawsze na dole */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Kontener ułatwiający ułożenie treści na środku */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ================= HEADER ================= */
+.main-header {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.main-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.main-nav a {
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.main-nav a:hover:not(.btn) {
+  color: var(--primary-color);
+}
+
+/* Przyciski w nawigacji */
+.btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  color: var(--white);
+}
+
+.btn-outline {
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* ================= GŁÓWNA TREŚĆ ================= */
+.main-content {
+  flex: 1; /* Pozwala głównej zawartości zająć dostępną przestrzeń */
+  /* padding: 40px 20px; */
+}
+
+/* ================= FOOTER ================= */
+.main-footer {
+  background-color: var(--white);
+  border-top: 1px solid var(--border-color);
+  padding: 30px 0;
+  margin-top: auto;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-links ul {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-links a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+/* ================= FORMULARZE AUTORYZACJI ================= */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    /* Sztywny margines od góry, absolutnie żadnego centrowania w pionie */
+    padding: 0; 
+    margin-top: 20px; 
+}
+
+.auth-card {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    /* TO JEST KLUCZ: karta ma zajmować dokładnie tyle miejsca, ile ma w środku */
+    height: fit-content; 
+}
+
+.auth-card-large {
+  max-width: 700px; /* Szersza karta, bo ma dwie kolumny */
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.auth-header h2 {
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.auth-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px; /* Dodano odstęp tylko w poziomie, pionowy załatwia .form-group */
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-main);
+  font-size: 0.9rem;
+}
+
+.form-control {
+  width: 100%;
+  height: 44px; /* KLUCZOWE: Wymusza tę samą wysokość dla input oraz select */
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: var(--white); /* Czasami select łapie szare tło */
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.auth-divider {
+  margin: 10px 0 30px 0;
+  border: 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-block {
+  display: block; /* KLUCZOWE: Wymusza zachowanie pełnego bloku na przycisku */
+  width: 100%;
+  padding: 12px;
+  font-size: 1.05rem;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  margin-top: 25px; /* Automatyczny odstęp przycisku od formularza */
+  font-family: inherit;
+}
+
+.alert {
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.alert-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #f87171;
+}
+
+.auth-footer-text {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.auth-footer-text a {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* Responsywność dla urządzeń mobilnych */
+@media (max-width: 600px) {
+  .auth-card {
+    padding: 25px;
+  }
+  .form-row {
+    grid-template-columns: 1fr; /* Na telefonach układamy jedno pod drugim */
+  }
+}
