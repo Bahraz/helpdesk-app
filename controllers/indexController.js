@@ -16,8 +16,8 @@ exports.getTicketsActive = (req, res) =>
   res.render("index", { user: mockAdmin, page: "pages/admin/tickets-active" });
 exports.getTicketsClosed = (req, res) =>
   res.render("index", { user: mockAdmin, page: "pages/admin/tickets-closed" });
-exports.getProfile = (req, res) =>
-  res.render("index", { user: mockAdmin, page: "pages/admin/profile" });
+exports.getUsers = (req, res) =>
+  res.render("index", { user: mockAdmin, page: "pages/admin/users" });
 exports.getUserCreate = (req, res) =>
   res.render("index", { user: mockAdmin, page: "pages/admin/user-create" });
 exports.getTicketDetail = (req, res) =>
@@ -34,7 +34,7 @@ exports.postUserCreate = (req, res) =>
     user: mockAdmin,
     page: "pages/admin/user-create-success",
   });
-exports.postUserEdit = (req, res) => res.redirect("/profile");
+exports.postUserEdit = (req, res) => res.redirect("/users");
 
 exports.postTicketReply = (req, res) => {
   const action = req.body.action;

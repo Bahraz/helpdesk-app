@@ -11,12 +11,12 @@ router.get("/tickets/pending", indexController.getTicketsPending);
 router.get("/tickets/active", indexController.getTicketsActive);
 router.get("/tickets/closed", indexController.getTicketsClosed);
 router.get("/tickets/detail", indexController.getTicketDetail);
-router.get("/profile", indexController.getProfile);
-router.get("/admin/users/new", indexController.getUserCreate);
-router.get("/admin/users/edit", indexController.getUserEdit);
+router.get("/users", indexController.getUsers);
+router.get("/admin/user/new", indexController.getUserCreate);
+router.get("/admin/user/edit", indexController.getUserEdit);
 router.get("/admin/users/reset-password", indexController.getUserResetPassword);
-router.post("/admin/users/new", indexController.postUserCreate);
-router.post("/admin/users/edit", indexController.postUserEdit);
+router.post("/admin/user/new", indexController.postUserCreate);
+router.post("/admin/user/edit", indexController.postUserEdit);
 router.post("/tickets/:id/reply", indexController.postTicketReply);
 
 module.exports = router;
