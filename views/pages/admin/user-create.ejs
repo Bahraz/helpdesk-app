@@ -3,53 +3,102 @@
     <h2 style="text-align: center; margin-bottom: 1.5rem">
       Utwórz konto pracownika
     </h2>
+
     <p style="text-align: center; margin-bottom: 2rem">
       Wygenerowane hasło jednorazowe zostanie wyświetlone na ekranie po
       poprawnym utworzeniu konta.
     </p>
 
+    <% if (typeof error !== "undefined" && error) { %>
+      <div style="margin-bottom: 1rem; color: #ef4444; text-align: center;">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <%= error %>
+      </div>
+    <% } %>
+
     <form action="/admin/user/new" method="POST">
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
         <div class="form-group">
-          <label>Imię</label>
-          <input type="text" class="form-control" required placeholder="Jan" />
-        </div>
-        <div class="form-group">
-          <label>Nazwisko</label>
+          <label for="firstName">Imię</label>
           <input
+            id="firstName"
+            name="firstName"
+            type="text"
+            class="form-control"
+            required
+            placeholder="Jan"
+            value="<%= formData?.firstName || '' %>"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Nazwisko</label>
+          <input
+            id="lastName"
+            name="lastName"
             type="text"
             class="form-control"
             required
             placeholder="Kowalski"
+            value="<%= formData?.lastName || '' %>"
           />
         </div>
       </div>
 
       <div class="form-group">
-        <label>Adres E-mail</label>
+        <label for="email">Adres E-mail</label>
         <input
+          id="email"
+          name="email"
           type="email"
           class="form-control"
           required
           placeholder="j.kowalski@firma.pl"
+          value="<%= formData?.email || '' %>"
         />
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
         <div class="form-group">
-          <label>Dział</label>
-          <input
-            type="text"
+          <label for="departmentId">Dział</label>
+          <select
+            id="departmentId"
+            name="departmentId"
             class="form-control"
-            required
-            placeholder="np. HR, Księgowość"
-          />
+            style="appearance: auto"
+          >
+            <option value="">-- Wybierz dział --</option>
+
+            <% departments.forEach(function(department) { %>
+              <option
+                value="<%= department.id %>"
+                <%= String(formData?.departmentId || "") === String(department.id) ? "selected" : "" %>
+              >
+                <%= department.name %>
+              </option>
+            <% }) %>
+          </select>
         </div>
+
         <div class="form-group">
-          <label>Rola w systemie</label>
-          <select class="form-control" style="appearance: auto">
-            <option value="user">Użytkownik</option>
-            <option value="admin">Administrator</option>
+          <label for="roleId">Rola w systemie</label>
+          <select
+            id="roleId"
+            name="roleId"
+            required
+            class="form-control"
+            style="appearance: auto"
+          >
+            <option value="">-- Wybierz rolę --</option>
+
+            <% roles.forEach(function(role) { %>
+              <option
+                value="<%= role.id %>"
+                <%= String(formData?.roleId || "") === String(role.id) ? "selected" : "" %>
+              >
+                <%= role.name %>
+              </option>
+            <% }) %>
           </select>
         </div>
       </div>
@@ -63,6 +112,7 @@
           ></i>
         </button>
       </div>
+
       <div style="text-align: center">
         <a
           href="/users"
@@ -71,8 +121,9 @@
             text-decoration: none;
             font-size: 0.9rem;
           "
-          ><i class="fa-solid fa-arrow-left"></i> Anuluj i wróć do profilu</a
         >
+          <i class="fa-solid fa-arrow-left"></i> Anuluj i wróć do profilu
+        </a>
       </div>
     </form>
   </div>
