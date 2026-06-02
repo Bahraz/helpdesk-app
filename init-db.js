@@ -1,30 +1,55 @@
 require("dotenv").config();
+const bcrypt = require("bcryptjs");
 const db = require("./config/database");
 
 async function initializeDB() {
   try {
     console.log("Czyszczenie bazy...");
-    
+
+    await db.execute("SET FOREIGN_KEY_CHECKS = 0");
     await db.execute("DROP TABLE IF EXISTS comments");
     await db.execute("DROP TABLE IF EXISTS tickets");
     await db.execute("DROP TABLE IF EXISTS users");
+    await db.execute("DROP TABLE IF EXISTS roles");
+    await db.execute("DROP TABLE IF EXISTS departments");
+    await db.execute("SET FOREIGN_KEY_CHECKS = 1");
 
     console.log("Tworzenie tabel...");
 
     await db.execute(`
+      CREATE TABLE roles (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(50) NOT NULL UNIQUE,
+        sort_order INT NOT NULL DEFAULT 0
+      ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+    `);
+
+    await db.execute(`
+      CREATE TABLE departments (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL UNIQUE,
+        is_active TINYINT(1) NOT NULL DEFAULT 1,
+        sort_order INT NOT NULL DEFAULT 0
+      ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+    `);
+
+    await db.execute(`
       CREATE TABLE users (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(50) NOT NULL,
-        surname VARCHAR(100) NOT NULL,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(100) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         password_hash VARCHAR(255) NOT NULL,
-        phone_number VARCHAR(20) NULL,
-        department VARCHAR(100) NULL,
-        role VARCHAR(50) NOT NULL,
+        phone VARCHAR(20) NULL,
+        department_id INT NULL,
+        role_id INT NOT NULL,
         is_first_login TINYINT(1) NOT NULL DEFAULT 1,
         is_active TINYINT(1) NOT NULL DEFAULT 1,
+        last_login_at DATETIME NULL,
         created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-        updated_at DATETIME(6) NULL
+        updated_at DATETIME(6) NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+        CONSTRAINT fk_user_role FOREIGN KEY (role_id) REFERENCES roles(id),
+        CONSTRAINT fk_user_department FOREIGN KEY (department_id) REFERENCES departments(id)
       ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
     `);
 
@@ -33,12 +58,12 @@ async function initializeDB() {
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(100) NOT NULL,
         description TEXT NULL,
-        priority VARCHAR(50) NOT NULL DEFAULT 'new',
-        status VARCHAR(50) NOT NULL,
+        priority VARCHAR(50) NOT NULL DEFAULT 'medium',
+        status VARCHAR(50) NOT NULL DEFAULT 'new',
         agent_id INT NULL,
         requestor_id INT NOT NULL,
         created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-        updated_at DATETIME(6) NULL,
+        updated_at DATETIME(6) NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
         CONSTRAINT fk_user_as_agent_in_tickets FOREIGN KEY (agent_id) REFERENCES users(id),
         CONSTRAINT fk_user_as_requestor_in_tickets FOREIGN KEY (requestor_id) REFERENCES users(id)
       ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
@@ -56,21 +81,37 @@ async function initializeDB() {
       ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
     `);
 
-    await db.execute("CREATE INDEX ix_tickets_requestor_id ON tickets(requestor_id);");
+    await db.execute(
+      "CREATE INDEX ix_tickets_requestor_id ON tickets(requestor_id);",
+    );
     await db.execute("CREATE INDEX ix_tickets_agent_id ON tickets(agent_id);");
-    await db.execute("CREATE INDEX ix_comments_ticket_id ON comments(ticket_id);");
+    await db.execute(
+      "CREATE INDEX ix_comments_ticket_id ON comments(ticket_id);",
+    );
     await db.execute("CREATE INDEX ix_comments_user_id ON comments(user_id);");
 
     console.log("Dodawanie danych testowych...");
 
+    const salt = await bcrypt.genSalt(10);
+    const defaultHash = await bcrypt.hash("password", salt);
+
+    await db.execute(
+      `INSERT INTO roles (id, name, sort_order) VALUES (1, 'Admin', 10), (2, 'Agent', 20), (3, 'Requestor', 30)`,
+    );
+
     await db.execute(`
-      INSERT INTO users (name, surname, email, password_hash, role, is_first_login, department) VALUES
-      ('Admin', 'Główny', 'admin@system.pl', 'dummy_hash_123', 'Admin', 0, 'IT'),
-      ('Anna', 'Wsparcie', 'anna@system.pl', 'dummy_hash_123', 'Agent', 0, 'Helpdesk'),
-      ('Jan', 'Kowalski', 'jan.kowalski@firma.pl', 'dummy_hash_123', 'Requestor', 1, 'Księgowość'),
-      ('Marta', 'Nowak', 'marta.nowak@firma.pl', 'dummy_hash_123', 'Requestor', 1, 'HR'),
-      ('Piotr', 'Zieliński', 'piotr.zielinski@firma.pl', 'dummy_hash_123', 'Requestor', 1, 'Magazyn'),
-      ('Katarzyna', 'Wójcik', 'katarzyna.wojcik@firma.pl', 'dummy_hash_123', 'Requestor', 1, 'Zarząd');
+      INSERT INTO departments (id, name, is_active, sort_order) VALUES 
+      (1, 'IT', 1, 10), (2, 'Helpdesk', 1, 20), (3, 'Księgowość', 1, 30), (4, 'HR', 1, 40), (5, 'Magazyn', 1, 50), (6, 'Zarząd', 1, 60)
+    `);
+
+    await db.execute(`
+      INSERT INTO users (first_name, last_name, email, password_hash, role_id, is_first_login, department_id, is_active) VALUES
+      ('Admin', 'Główny', 'admin@system.pl', '${defaultHash}', 1, 0, 1, 1),
+      ('Anna', 'Wsparcie', 'anna@system.pl', '${defaultHash}', 2, 0, 2, 1),
+      ('Jan', 'Kowalski', 'jan.kowalski@firma.pl', '${defaultHash}', 3, 1, 3, 1),
+      ('Marta', 'Nowak', 'marta.nowak@firma.pl', '${defaultHash}', 3, 1, 4, 1),
+      ('Piotr', 'Zieliński', 'piotr.zielinski@firma.pl', '${defaultHash}', 3, 1, 5, 1),
+      ('Katarzyna', 'Wójcik', 'katarzyna.wojcik@firma.pl', '${defaultHash}', 3, 1, 6, 1);
     `);
 
     await db.execute(`

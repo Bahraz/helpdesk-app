@@ -117,6 +117,7 @@ class User {
       u.first_name,
       u.last_name,
       u.email,
+      u.phone,
       u.password_hash,
       u.role_id,
       u.department_id,

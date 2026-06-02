@@ -17,6 +17,10 @@ function mapUserRole(roleName) {
     return "requestor";
   }
 
+  if (normalizedRole === "agent") {
+    return "agent";
+  }
+
   return null;
 }
 
@@ -28,8 +32,8 @@ async function login(req, res) {
       title: "Logowanie",
       errors: errors.array(),
       old: {
-        email: req.body.email
-      }
+        email: req.body.email,
+      },
     });
   }
 
@@ -42,7 +46,7 @@ async function login(req, res) {
       return res.status(401).render("auth/login", {
         title: "Logowanie",
         errors: [{ msg: "Nieprawidłowy email lub hasło." }],
-        old: { email }
+        old: { email },
       });
     }
 
@@ -50,7 +54,7 @@ async function login(req, res) {
       return res.status(403).render("auth/login", {
         title: "Logowanie",
         errors: [{ msg: "Konto jest nieaktywne." }],
-        old: { email }
+        old: { email },
       });
     }
 
@@ -60,7 +64,7 @@ async function login(req, res) {
       return res.status(401).render("auth/login", {
         title: "Logowanie",
         errors: [{ msg: "Nieprawidłowy email lub hasło." }], // celowo bez konkretnego powodu
-        old: { email }
+        old: { email },
       });
     }
 
@@ -73,18 +77,17 @@ async function login(req, res) {
       email: user.email,
       roleId: user.role_id,
       roleName: user.role_name,
-      departmentId: user.department_id
+      departmentId: user.department_id,
     };
 
     return res.redirect("/dashboard");
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Błąd logowania:", error);
 
     return res.status(500).render("auth/login", {
       title: "Logowanie",
       errors: [{ msg: "Wystąpił błąd serwera. Spróbuj ponownie później." }],
-      old: { email }
+      old: { email },
     });
   }
 }
@@ -154,12 +157,11 @@ exports.postLogin = async (req, res) => {
       role: mapUserRole(user.role_name),
 
       departmentId: user.department_id,
-      departmentId: user.department_name,
+      departmentName: user.department_name,
     };
 
     return res.redirect("/");
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Błąd logowania:", error);
 
     return res.status(500).render("index", {
