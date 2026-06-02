@@ -10,10 +10,10 @@
           <a href="/tickets/closed">Zamknięte</a>
           <a href="/users">Użytkownicy</a>
           <a href="/logout" class="btn btn-outline">Wyloguj</a>
-        <% } else if (user.role === 'user') { %>
-          <a href="/#">Utwórz zgłoszenie</a>
-          <a href="/#">Moje zgłoszenia</a>
-          <a href="/#">Mój profil</a>
+        <% } else if (user.role === 'requestor') { %>
+          <a href="/tickets/create">Utwórz zgłoszenie</a>
+          <a href="/">Moje zgłoszenia</a>
+          <a href="/profile">Mój profil</a>
           <a href="/logout" class="btn btn-outline">Wyloguj</a>
         <% } %>
       <% } else { %>

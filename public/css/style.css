@@ -294,6 +294,31 @@ body {
   display: inline-block;
 }
 
+.status-badge.status-new {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.status-badge.status-in_progress {
+  background: rgba(249, 115, 22, 0.15);
+  color: #f97316;
+}
+
+.status-badge.status-resolved {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.status-badge.status-waiting_for_requestor {
+  background: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+}
+
+.status-badge.status-closed {
+  background: rgba(161, 161, 170, 0.15);
+  color: #a1a1aa;
+}
+
 .priority-badge {
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -315,6 +340,13 @@ body {
 .priority-low {
   background: rgba(234, 179, 8, 0.15);
   color: #eab308; /* Żółty */
+}
+
+.priority-critical {
+  background: rgba(220, 38, 38, 0.25);
+  color: #f87171;
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  text-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
 }
 
 /* Proces - Jak to działa */

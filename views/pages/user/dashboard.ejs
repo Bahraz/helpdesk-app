@@ -1,4 +1,45 @@
-<main style="padding: 6rem 12.5%; min-height: 60vh; text-align: center;">
-  <h2>Witaj, <span class="highlight"><%= user.name %></span>!</h2>
-  <p style="color: var(--text-muted); margin-top: 1rem;">To jest Twój panel użytkownika. Załóż nowy ticket lub sprawdź status swoich zgłoszeń w menu powyżej.</p>
+<% 
+  // Mocki danych dla tabeli (używane, gdy backend nie przesyła zmiennej tickets)
+  if (typeof tickets === 'undefined' || tickets.length === 0) { 
+    tickets = [
+      { id: 1, title: 'Problem z logowaniem do systemu ERP', description: 'Wywala błąd 500 przy próbie logowania.', priority: 'high', status: 'Nowy', created_at: new Date() },
+      { id: 2, title: 'Brak tonera w drukarce - 2 piętro', description: 'Drukarka na 2 piętrze woła o nowy toner.', priority: 'medium', status: 'W toku', created_at: new Date(Date.now() - 86400000) },
+      { id: 3, title: 'Awaria głównego serwera!', description: 'Nikt nie ma dostępu do dysku sieciowego.', priority: 'critical', status: 'Rozwiązany', created_at: new Date(Date.now() - 172800000) }
+    ];
+  }
+
+  // Funkcja pomocnicza do określania typu karty na dashboardzie
+  const getCardType = (status) => {
+    const s = status.toLowerCase();
+    if (s === 'zamknięty' || s === 'closed' || s === 'rozwiązany' || s === 'resolved') return 'closed';
+    if (s === 'nowy' || s === 'new') return 'pending';
+    return 'active';
+  };
+%>
+
+<main class="container" style="padding: 4rem 12.5%; min-height: 70vh">
+  <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+      <h2>Witaj ponownie, <span class="highlight"><%= user.firstName %></span>!</h2>
+      <p class="text-muted">Twoje aktualne zgłoszenia w systemie.</p>
+    </div>
+    <a href="/tickets/create" class="btn btn-primary">
+      <i class="fa-solid fa-plus" style="margin-right: 8px;"></i>Nowe zgłoszenie
+    </a>
+  </div>
+  
+  <div class="ticket-grid">
+    <% if (typeof tickets !== 'undefined' && tickets.length > 0) { %>
+      <% tickets.forEach(ticket => { %>
+        <%- include('../../partials/ticket-card', { 
+          ticket: ticket, 
+          type: getCardType(ticket.status) 
+        }) %>
+      <% }) %>
+    <% } else { %>
+      <div style="grid-column: 1 / -1; padding: 3rem; text-align: center; color: var(--text-muted); background: var(--surface-color); border-radius: 12px; border: 1px solid var(--border-color);">
+        Nie masz jeszcze żadnych zgłoszeń.
+      </div>
+    <% } %>
+  </div>
 </main>

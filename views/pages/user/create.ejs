@@ -1,0 +1,70 @@
+<main class="container" style="padding: 4rem 12.5%; min-height: 70vh">
+  <div class="back-link">
+    <a href="/"
+      ><i class="fa-solid fa-arrow-left"></i> Powrót do listy</a
+    >
+  </div>
+
+  <div class="auth-section" style="min-height: auto; padding-top: 2rem">
+    <div class="auth-card" style="max-width: 800px; text-align: left">
+      <h2>Utwórz <span class="highlight">nowe zgłoszenie</span></h2>
+      <p>
+        Opisz swój problem techniczny, a nasi specjaliści zajmą się nim
+        niezwłocznie.
+      </p>
+
+      <% if (locals.error) { %>
+        <div class="alert"><i class="fa-solid fa-triangle-exclamation"></i> <%= locals.error %></div>
+      <% } %>
+
+      <% if (locals.success) { %>
+        <div class="alert" style="background: rgba(34, 197, 94, 0.15); color: #22c55e; border-color: rgba(34, 197, 94, 0.3);">
+          <i class="fa-solid fa-check"></i> <%= locals.success %>
+        </div>
+      <% } %>
+
+      <form action="/tickets/create" method="POST">
+        <div class="form-group">
+          <label for="title">Temat zgłoszenia</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            class="form-control"
+            placeholder="Krótki tytuł (np. Problem z dostępem do folderu)"
+            required
+            value="<%= locals.old ? old.title : '' %>"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Opis problemu</label>
+          <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            placeholder="Opisz dokładnie, co się stało..."
+            required
+            style="min-height: 150px"
+          ><%= locals.old ? old.description : '' %></textarea>
+        </div>
+
+        <div class="form-group" style="max-width: 300px">
+          <label for="priority">Priorytet zgłoszenia</label>
+          <select id="priority" name="priority" class="form-control">
+            <option value="low" <%= (locals.old && old.priority === 'low') ? 'selected' : '' %>>Niski</option>
+            <option value="medium" <%= (!locals.old || old.priority === 'medium') ? 'selected' : '' %>>Średni (Normalny)</option>
+            <option value="high" <%= (locals.old && old.priority === 'high') ? 'selected' : '' %>>Wysoki</option>
+          </select>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem">
+          <button type="submit" class="btn btn-primary">
+            Wyślij zgłoszenie
+          </button>
+          <a href="/" class="btn btn-secondary">Anuluj</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
