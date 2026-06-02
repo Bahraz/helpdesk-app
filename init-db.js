@@ -107,7 +107,7 @@ async function initializeDB() {
     await db.execute(`
       INSERT INTO users (first_name, last_name, email, password_hash, role_id, is_first_login, department_id, is_active) VALUES
       ('Admin', 'Główny', 'admin@system.pl', '${defaultHash}', 1, 0, 1, 1),
-      ('Anna', 'Wsparcie', 'anna@system.pl', '${defaultHash}', 2, 0, 2, 1),
+      ('User', 'Testowy', 'user@system.pl', '${defaultHash}', 3, 0, 2, 1),
       ('Jan', 'Kowalski', 'jan.kowalski@firma.pl', '${defaultHash}', 3, 1, 3, 1),
       ('Marta', 'Nowak', 'marta.nowak@firma.pl', '${defaultHash}', 3, 1, 4, 1),
       ('Piotr', 'Zieliński', 'piotr.zielinski@firma.pl', '${defaultHash}', 3, 1, 5, 1),
