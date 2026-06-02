@@ -1,0 +1,22 @@
+<main class="auth-section">
+  <div class="auth-card">
+    <h2>Zaloguj się</h2>
+    <p>Uzyskaj dostęp do swojego panelu HelpDesk</p>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert"><i class="fa-solid fa-circle-exclamation"></i> <%= error %></div>
+    <% } %>
+
+    <form action="/auth/login" method="POST">
+      <div class="form-group">
+        <label for="email">Adres e-mail</label>
+        <input type="email" id="email" name="email" class="form-control" required placeholder="twoj.email@firma.pl">
+      </div>
+      <div class="form-group">
+        <label for="password">Hasło</label>
+        <input type="password" id="password" name="password" class="form-control" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary auth-btn">Zaloguj się <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 6px;"></i></button>
+    </form>
+  </div>
+</main>

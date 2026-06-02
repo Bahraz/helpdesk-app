@@ -1,0 +1,88 @@
+<main style="padding: 4rem 12.5%; min-height: 80vh;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>Twój Profil Administracyjny</h2>
+    <a href="/admin/user/new" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i> Utwórz nowe konto</a>
+  </div>
+
+  <div class="ticket-detail-header">
+    <form action="/user/update" method="POST">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        <div class="form-group">
+          <label>Imię i nazwisko</label>
+          <input type="text" class="form-control" value="<%= typeof user !== 'undefined' ? user.name : '' %>" required>
+        </div>
+        <div class="form-group">
+          <label>Adres E-mail</label>
+          <input type="email" class="form-control" value="admin@firma.pl" required>
+        </div>
+        <div class="form-group">
+          <label>Zmień hasło (opcjonalnie)</label>
+          <input type="password" class="form-control" placeholder="••••••••">
+        </div>
+        <div class="form-group" style="display: flex; align-items: flex-end;">
+          <button type="submit" class="btn btn-outline" style="width: 100%;">Zapisz zmiany profilu</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <h3 style="margin-top: 3rem; margin-bottom: 1.5rem;">Zarządzanie Użytkownikami Firmy</h3>
+  <div class="table-container">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Pracownik</th>
+          <th>Email</th>
+          <th>Dział</th>
+          <th>Rola</th>
+          <th>Status</th>
+          <th>Akcje</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% const usersList = typeof users !== "undefined" ? users : []; %>
+
+        <% if (usersList.length > 0) { %>
+          <% usersList.forEach(u => { %>
+            <tr>
+              <td style="color: var(--primary-color);">#<%= u.id %></td>
+              <td><strong><%= u.first_name %> <%= u.last_name %></strong></td>
+              <td><%= u.email %></td>
+              <td><%= u.department_name || "Brak działu" %></td>
+              <td>
+                <% if (u.role_name === "Admin") { %>
+                  <span class="badge" style="background: rgba(14, 165, 233, 0.1); color: var(--primary-color); border: none; margin: 0;">
+                    <%= u.role_name %>
+                  </span>
+                <% } else { %>
+                  <span class="badge" style="background: rgba(255,255,255,0.1); color: var(--text-main); border: none; margin: 0;">
+                    <%= u.role_name || "Brak roli" %>
+                  </span>
+                <% } %>
+              </td>
+              <td>
+                <% if (u.is_active) { %>
+                  <span style="color: #22c55e;"><i class="fa-solid fa-circle-check"></i> Aktywny</span>
+                <% } else { %>
+                  <span style="color: #ef4444;"><i class="fa-solid fa-circle-xmark"></i> Zablokowany</span>
+                <% } %>
+              </td>
+              <td>
+                <a href="/admin/user/edit/<%= u.id %>" class="btn btn-outline" style="padding: 0.2rem 0.6rem; font-size: 0.8rem;">
+                  <i class="fa-solid fa-pen-to-square"></i> Edytuj
+                </a>
+              </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 2rem;">
+              Brak użytkowników do wyświetlenia.
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</main>

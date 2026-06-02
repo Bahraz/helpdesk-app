@@ -1,0 +1,162 @@
+<main class="auth-section">
+  <div class="auth-card" style="max-width: 600px; text-align: left">
+    <h2 style="text-align: center; margin-bottom: 1.5rem">
+      Edycja pracownika #<%= editedUser.id %>
+    </h2>
+
+    <p style="text-align: center; margin-bottom: 2rem">
+      Zmień dane pracownika, przypisz mu nową rolę lub zablokuj dostęp do
+      systemu.
+    </p>
+
+    <% if (typeof error !== "undefined" && error) { %>
+      <div style="margin-bottom: 1rem; color: #ef4444; text-align: center;">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <%= error %>
+      </div>
+    <% } %>
+
+    <form action="/admin/user/edit/<%= editedUser.id %>" method="POST">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+        <div class="form-group">
+          <label for="firstName">Imię</label>
+          <input
+            id="firstName"
+            name="firstName"
+            type="text"
+            class="form-control"
+            required
+            value="<%= editedUser.first_name || '' %>"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Nazwisko</label>
+          <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            class="form-control"
+            required
+            value="<%= editedUser.last_name || '' %>"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Adres E-mail</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          class="form-control"
+          required
+          value="<%= editedUser.email || '' %>"
+        />
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem">
+        <div class="form-group">
+          <label for="departmentId">Dział</label>
+          <select
+            id="departmentId"
+            name="departmentId"
+            class="form-control"
+            style="appearance: auto"
+          >
+            <option value="">-- Brak działu --</option>
+
+            <% departments.forEach(function(department) { %>
+              <option
+                value="<%= department.id %>"
+                <%= String(editedUser.department_id || "") === String(department.id) ? "selected" : "" %>
+              >
+                <%= department.name %>
+              </option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="roleId">Rola</label>
+          <select
+            id="roleId"
+            name="roleId"
+            class="form-control"
+            style="appearance: auto"
+            required
+          >
+            <option value="">-- Wybierz rolę --</option>
+
+            <% roles.forEach(function(role) { %>
+              <option
+                value="<%= role.id %>"
+                <%= String(editedUser.role_id || "") === String(role.id) ? "selected" : "" %>
+              >
+                <%= role.name %>
+              </option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="isActive">Status</label>
+          <select
+            id="isActive"
+            name="isActive"
+            class="form-control"
+            style="appearance: auto"
+            required
+          >
+            <option value="1" <%= Number(editedUser.is_active) === 1 ? "selected" : "" %>>
+              Aktywny
+            </option>
+
+            <option value="0" <%= Number(editedUser.is_active) === 0 ? "selected" : "" %>>
+              Zablokowany
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-top: 2rem">
+        <a
+          href="/admin/users/reset-password/<%= editedUser.id %>"
+          class="btn btn-outline"
+          style="
+            flex: 1;
+            color: #eab308;
+            border-color: rgba(234, 179, 8, 0.4);
+            text-align: center;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+          "
+        >
+          <i class="fa-solid fa-key"></i> Zresetuj hasło
+        </a>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="flex: 1; padding: 0.6rem 1rem; font-size: 0.9rem"
+        >
+          Zapisz zmiany
+          <i class="fa-solid fa-check" style="margin-left: 6px"></i>
+        </button>
+      </div>
+
+      <div style="text-align: center; margin-top: 1rem">
+        <a
+          href="/users"
+          style="
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+          "
+        >
+          <i class="fa-solid fa-arrow-left"></i> Anuluj i wróć do profilu
+        </a>
+      </div>
+    </form>
+  </div>
+</main>

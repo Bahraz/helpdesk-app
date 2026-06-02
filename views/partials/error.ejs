@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <%- include('head') %>
+  <body>
+    <div class="ambient-light"></div>
+    <main
+      style="
+        padding: 6rem 12.5%;
+        text-align: center;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <h1 style="font-size: 4rem; color: #ef4444; margin-bottom: 1rem">
+        <i class="fa-solid fa-triangle-exclamation"></i> Błąd
+      </h1>
+      <p
+        style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem"
+      >
+        <%= message %>
+      </p>
+      <a href="/" class="btn btn-primary">Wróć na stronę główną</a>
+    </main>
+  </body>
+</html>

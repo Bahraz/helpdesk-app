@@ -1,0 +1,96 @@
+<%
+  // MOCK DANYCH: Wybrany ticket
+  const mockTicket = {
+    id: 98,
+    tytul: "Konfiguracja konta VPN",
+    opis: "Proszę o utworzenie dostępu VPN dla nowego pracownika. Zależy nam na czasie, bo zaczyna pracę od poniedziałku.",
+    priorytet: "Średni",
+    status: "W toku",
+    przypisany_admin_id: 1,
+    tworca_nazwa: "Jan Kaczmarek (Sprzedaż)",
+    czas_zalozenia: "15:40, Wczoraj"
+  };
+
+  // MOCK DANYCH: Tabela odpowiedzi
+  const mockReplies = [
+    {
+      id: 1,
+      autor_nazwa: "Admin IT",
+      rola: "admin",
+      tresc: "Jasne, proszę tylko o podanie imienia i nazwiska tego pracownika oraz jego adresu e-mail.",
+      czas_odpowiedzi: "16:05, Wczoraj"
+    },
+    {
+      id: 2,
+      autor_nazwa: "Jan Kaczmarek (Sprzedaż)",
+      rola: "user",
+      tresc: "Pracownik nazywa się Michał Nowak, email: m.nowak@firma.pl",
+      czas_odpowiedzi: "08:15, Dziś"
+    }
+  ];
+
+  let priorityClass = 'priority-low';
+  if (mockTicket.priorytet === 'Wysoki') priorityClass = 'priority-high';
+  else if (mockTicket.priorytet === 'Średni') priorityClass = 'priority-medium';
+%>
+
+<main style="padding: 4rem 12.5%; min-height: 80vh;">
+  <div class="back-link">
+    <a href="/"><i class="fa-solid fa-arrow-left"></i> Wróć do dashboardu</a>
+  </div>
+
+  <div class="ticket-detail-header">
+    <div class="ticket-meta" style="margin-bottom: 1rem;">
+      <span class="ticket-id" style="font-size: 1.2rem;">#T-<%= mockTicket.id %></span>
+      <span class="ticket-time"><i class="fa-regular fa-clock"></i> <%= mockTicket.czas_zalozenia %></span>
+    </div>
+    <h2 style="margin-bottom: 1rem; font-size: 2rem;"><%= mockTicket.tytul %></h2>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <span class="status-badge"><i class="fa-solid fa-spinner"></i> <%= mockTicket.status %></span>
+      <span class="priority-badge <%= priorityClass %>"><i class="fa-solid fa-flag"></i> <%= mockTicket.priorytet %></span>
+      <span class="badge" style="background: rgba(255,255,255,0.1); color: var(--text-main); border: 1px solid var(--border-color); margin-bottom: 0;"><i class="fa-solid fa-user"></i> Zgłaszający: <%= mockTicket.tworca_nazwa %></span>
+    </div>
+  </div>
+
+  <div class="conversation-thread">
+    <!-- Główny opis zgłoszenia jako pierwsza wiadomość -->
+    <div class="message-card role-user">
+      <div class="message-header">
+        <span class="message-author"><i class="fa-solid fa-user"></i> <%= mockTicket.tworca_nazwa %></span>
+        <span><%= mockTicket.czas_zalozenia %></span>
+      </div>
+      <div class="message-body"><%= mockTicket.opis %></div>
+    </div>
+
+    <!-- Odpowiedzi z bazy -->
+    <% mockReplies.forEach(reply => { %>
+      <div class="message-card <%= reply.rola === 'admin' ? 'role-admin' : 'role-user' %>">
+        <div class="message-header">
+          <span class="message-author">
+            <i class="fa-solid <%= reply.rola === 'admin' ? 'fa-headset' : 'fa-user' %>"></i> <%= reply.autor_nazwa %>
+          </span>
+          <span><%= reply.czas_odpowiedzi %></span>
+        </div>
+        <div class="message-body"><%= reply.tresc %></div>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Formularz odpowiedzi -->
+  <div class="reply-section">
+    <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;"><i class="fa-solid fa-reply"></i> Dodaj odpowiedź</h3>
+    <form action="/tickets/<%= mockTicket.id %>/reply" method="POST">
+      <div class="form-group">
+        <textarea name="tresc" class="form-control" placeholder="Wpisz treść swojej odpowiedzi... Jeśli to Twoja ostatnia czynność, kliknij Zamknij zgłoszenie." required></textarea>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1rem;">
+        <button type="submit" name="action" value="close" class="btn btn-outline" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">
+          <i class="fa-solid fa-lock"></i> Zamknij zgłoszenie
+        </button>
+        <button type="submit" name="action" value="reply" class="btn btn-primary">
+          <i class="fa-solid fa-paper-plane"></i> Wyślij odpowiedź
+        </button>
+      </div>
+    </form>
+  </div>
+</main>

@@ -1,0 +1,47 @@
+<% 
+  // 1. Zmienne wyglądu karty
+  let cardStyle = '';
+  let titleClass = 'ticket-title'; // Domyślna klasa
+  
+  if (type === 'active') {
+    cardStyle = 'border-color: var(--primary-glow);';
+  } else if (type === 'closed') {
+    cardStyle = 'opacity: 0.8;';
+    titleClass += ' is-closed'; // Dopisujemy klasę do tytułu dla zamkniętych zgłoszeń
+  }
+  
+  // 2. Obsługa priorytetów
+  let priorityClass = 'priority-low';
+  if (ticket.priorytet === 'Wysoki') priorityClass = 'priority-high';
+  else if (ticket.priorytet === 'Średni') priorityClass = 'priority-medium';
+%>
+
+<div class="ticket-card" style="<%= cardStyle %>">
+  <div class="ticket-meta">
+    <span class="ticket-id">#T-<%= ticket.id %></span>
+    <span class="ticket-time"><i class="fa-regular fa-clock"></i> <%= ticket.czas_zalozenia %></span>
+  </div>
+  
+  <div class="<%= titleClass %>">
+    <%= ticket.tytul %>
+  </div>
+  
+  <div class="ticket-desc"><%= ticket.opis %></div>
+  
+  <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+    <i class="fa-solid fa-user"></i> <%= ticket.tworca_nazwa %>
+  </div>
+  
+  <div class="ticket-footer" style="margin-top: auto;">
+    <% if (type === 'pending') { %>
+      <span class="priority-badge <%= priorityClass %>"><i class="fa-solid fa-flag"></i> <%= ticket.priorytet %></span>
+      <a href="/tickets/detail" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Odpowiedz</a>
+    <% } else if (type === 'active') { %>
+      <span class="status-badge"><i class="fa-solid fa-spinner"></i> <%= ticket.status %></span>
+      <a href="/tickets/detail" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Odpowiedz</a>
+    <% } else if (type === 'closed') { %>
+      <span class="badge" style="background: rgba(34, 197, 94, 0.15); color: #22c55e; margin: 0; padding: 0.5rem 1rem;"><i class="fa-solid fa-check"></i> <%= ticket.status %></span>
+      <a href="/tickets/detail" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Odpowiedz</a>
+    <% } %>
+  </div>
+</div>
