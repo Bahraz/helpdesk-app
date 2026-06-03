@@ -1,17 +1,15 @@
 const userRepository = require("../repositories/user.repository.js");
 const { generateTemporaryPassword } = require("../helpers/password.helper.js");
-const { notFoundError } = require("../helpers/error.helper.js");
+const { notFoundError, conflictError } = require("../helpers/error.helper.js");
 const bcrypt = require("bcrypt");
 
 class UserService {
     async createUserByAdmin(data) {
         const existingUser = await userRepository.findByEmail(data.email);
 
-        if (existingUser) {
-            const error = new Error("Użytkownik z takim adresem e-mail już istnieje.");
-            error.status = 409;
-            throw error;
-        }
+        if (existingUser)
+            conflictError("Użytkownik z takim adresem e-mail już istnieje.");
+        
 
         const temporaryPassword = generateTemporaryPassword();
         const hashedPassword = await bcrypt.hash(temporaryPassword, 10);
@@ -30,20 +28,15 @@ class UserService {
     async updateUserByAdmin(userId, data) {
         const user = await userRepository.findById(userId);
 
-        if (!user) {
-            const error = new Error("Nie można znaleźć użytkownika o podanym ID.");
-            error.status = 404;
-            throw error;
-        }
+        if (!user)
+            notFoundError("Nie można znaleźć użytkownika o podanym ID.");
+        
 
         const existingUserWithEmail = await userRepository.findByEmail(data.email);
 
         if (existingUserWithEmail && 
             Number(existingUserWithEmail.id) !== Number(userId)) {
-            const error = new Error("Użytkownik z takim adresem e-mail już istnieje.");
-            error.status = 409;
-            error.data = { ...existingUserWithEmail };
-            throw error;
+            conflictError("Użytkownik z takim adresem e-mail już istnieje.");
         }
 
         await userRepository.update(userId, data);
@@ -54,7 +47,8 @@ class UserService {
     async resetPassword(userId) {
         const user = await userRepository.findById(userId);
 
-        if (!user) { notFoundError("Nie można znaleźć użytkownika o podanym ID."); }
+        if (!user) { 
+            notFoundError("Nie można znaleźć użytkownika o podanym ID."); }
 
         const temporaryPassword = generateTemporaryPassword();
         const hashedPassword = await bcrypt.hash(temporaryPassword, 12);
@@ -68,7 +62,9 @@ class UserService {
 
     async findById(id) {
         const user = await userRepository.findById(id);
-        if (!user) { notFoundError("Nie można znaleźć użytkownika o podanym ID."); }
+        if (!user) 
+            notFoundError("Nie można znaleźć użytkownika o podanym ID.");
+        
         return user;
     }
 

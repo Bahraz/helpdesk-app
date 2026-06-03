@@ -82,6 +82,11 @@ module.exports = class Model {
         return '';
     }
 
+    static async query(sql, params = []) {
+        const [rows] = await db.query(sql, params);
+        return rows;
+    }
+
     static async find({
         where = null,
         orderBy = null,
@@ -167,7 +172,11 @@ module.exports = class Model {
     }
 
     static async updateById(id, data) {
+        data = this.mapFields(data);
+
         const columns = Object.keys(data);
+
+        if (columns.length === 0) return;
 
         const values = columns.map(c => data[c]);
 
@@ -176,14 +185,45 @@ module.exports = class Model {
             .join(', ');
 
         const query = `
-            UPDATE ${this.options.tableName}
-            SET ${setClause}
-            WHERE id = ?
-        `;
+        UPDATE ${this.options.tableName}
+        SET ${setClause}
+        WHERE id = ?
+    `;
 
         values.push(id);
 
         const [result] = await db.query(query, values);
+
+        return result;
+    }
+
+    static toCamel(str) {
+        return str.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
+    }
+
+    static toSnake(str) {
+        return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+    }
+
+    static mapFields(data = {}) {
+        const schemaKeys = Object.keys(this.schema || {});
+
+        const result = {};
+
+        for (const [key, value] of Object.entries(data)) {
+            if (value === undefined) continue;
+
+            if (schemaKeys.includes(key)) {
+                result[key] = value;
+                continue;
+            }
+
+            const snakeKey = this.toSnake(key);
+
+            if (schemaKeys.includes(snakeKey)) {
+                result[snakeKey] = value;
+            }
+        }
 
         return result;
     }
