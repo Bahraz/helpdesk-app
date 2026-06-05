@@ -8,14 +8,21 @@ const {
 } = require("../helpers/view.helper");
 const userService = require("../services/user.service");
 const mergeUserFormData = require("../helpers/data.helper").mergeUserFormData;
+const ticketService = require("../services/ticket.service");
 
 function getLoggedUser(req) {
   return req.session.user || null;
 }
 
 exports.getHome = (req, res) => {
+  const user = getLoggedUser(req);
+/*   const unassignedTickets = ticketService.getTickets({ agent_id: null });
+  const myTickets = ticketService.getTickets({ agent_id: user.id }); */
+
   res.render("index", {
-    user: getLoggedUser(req),
+    user,
+/*     myTickets,
+    unassignedTickets, */
   });
 };
 
