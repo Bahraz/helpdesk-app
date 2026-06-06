@@ -7,7 +7,7 @@ exports.getIndex = (req, res) => {
   });
 };
 
-exports.getTicketDetail = (req, res) => {
+exports.getTicketDetails = (req, res) => {
   const user = getLoggedUser(req);
 
   const page =

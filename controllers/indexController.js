@@ -2,27 +2,27 @@ const { validationResult } = require("express-validator");
 const Role = require("../models/Role");
 const Department = require("../models/Department");
 const User = require("../models/User");
-
-function generateTemporaryPassword(length = 12) {
-  const chars =
-    "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%";
-
-  let password = "";
-
-  for (let i = 0; i < length; i++) {
-    password += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-
-  return password;
-}
+const {
+  renderUserCreateForm,
+  renderUserEditForm
+} = require("../helpers/view.helper");
+const userService = require("../services/user.service");
+const mergeUserFormData = require("../helpers/data.helper").mergeUserFormData;
+const ticketService = require("../services/ticket.service");
 
 function getLoggedUser(req) {
   return req.session.user || null;
 }
 
 exports.getHome = (req, res) => {
+  const user = getLoggedUser(req);
+/*   const unassignedTickets = ticketService.getTickets({ agent_id: null });
+  const myTickets = ticketService.getTickets({ agent_id: user.id }); */
+
   res.render("index", {
-    user: getLoggedUser(req),
+    user,
+/*     myTickets,
+    unassignedTickets, */
   });
 };
 
@@ -117,29 +117,21 @@ exports.getUserCreate = async (req, res) => {
 
 exports.getUserEdit = async (req, res) => {
   try {
-    const editedUser = await User.findByIdWithDetails(req.params.id);
+    const editedUser = await userService.findById(req.params.id);
 
-    if (!editedUser) {
+    await renderUserEditForm(req, res, 200, {
+      editedUser,
+      error: null,
+    });
+  }
+  catch (error) {
+    if (error.status === 404) {
       return res.status(404).render("index", {
         user: req.session.user,
         page: "partials/error",
         message: "Nie znaleziono użytkownika.",
       });
     }
-
-    const roles = await Role.findAllActive();
-    const departments = await Department.findAllActive();
-
-    res.render("index", {
-      user: req.session.user,
-      page: "pages/admin/user-edit",
-      editedUser,
-      roles,
-      departments,
-      error: null,
-    });
-  }
-  catch (error) {
     console.error("Błąd pobierania danych do edycji użytkownika:", error);
 
     res.status(500).render("index", {
@@ -151,12 +143,18 @@ exports.getUserEdit = async (req, res) => {
 };
 
 exports.getUserResetPassword = async (req, res) => {
-  const userId = req.params.id;
-
   try {
-    const editedUser = await User.findByIdWithDetails(userId);
+    const editedUser = await userService.findById(req.params.id);
+    const result = await userService.resetPassword(req.params.id);
 
-    if (!editedUser) {
+    return res.render("index", {
+      user: req.session.user,
+      page: "pages/admin/user-reset-password",
+      editedUser: result,
+      temporaryPassword: result.temporaryPassword,
+    });
+  } catch (error) {
+    if (error.status === 404) {
       return res.status(404).render("index", {
         user: req.session.user,
         page: "partials/error",
@@ -164,17 +162,6 @@ exports.getUserResetPassword = async (req, res) => {
       });
     }
 
-    const temporaryPassword = generateTemporaryPassword(12);
-
-    await User.resetPassword(userId, temporaryPassword);
-
-    return res.render("index", {
-      user: req.session.user,
-      page: "pages/admin/user-reset-password",
-      editedUser,
-      temporaryPassword,
-    });
-  } catch (error) {
     console.error("Błąd resetowania hasła:", error);
 
     return res.status(500).render("index", {
@@ -193,203 +180,56 @@ exports.getTicketDetail = (req, res) => {
 };
 
 exports.postUserCreate = async (req, res) => {
-  console.log("BODY:", req.body);
-  const errors = validationResult(req);
-
-  const {
-    firstName,
-    lastName,
-    email,
-    phone,
-    roleId,
-    departmentId,
-  } = req.body;
-
-  const formData = {
-    firstName,
-    lastName,
-    email,
-    phone,
-    roleId,
-    departmentId,
-  };
-
   try {
-    const roles = await Role.findAllActive();
-    const departments = await Department.findAllActive();
-
-    if (!errors.isEmpty()) {
-      return res.status(422).render("index", {
-        user: req.session.user,
-        page: "pages/admin/user-create",
-        roles,
-        departments,
-        formData,
-        error: errors.array()[0].msg,
-      });
-    }
-
-    const existingUser = await User.findByEmail(email);
-
-    if (existingUser) {
-      return res.status(409).render("index", {
-        user: req.session.user,
-        page: "pages/admin/user-create",
-        roles,
-        departments,
-        formData,
-        error: "Użytkownik z takim adresem e-mail już istnieje.",
-      });
-    }
-
-    const temporaryPassword = generateTemporaryPassword(12);
-
-    await User.createByAdmin({
-      firstName,
-      lastName,
-      email,
-      phone,
-      roleId,
-      departmentId,
-      password: temporaryPassword,
-    });
+    const createdUser = await userService.createUserByAdmin(req.body);
 
     return res.render("index", {
       user: req.session.user,
       page: "pages/admin/user-create-success",
-      createdUser: {
-        firstName,
-        lastName,
-        email,
-        temporaryPassword,
-      },
+      createdUser,
     });
   } catch (error) {
     console.error("Błąd tworzenia użytkownika:", error);
 
-    try {
-      const roles = await Role.findAllActive();
-      const departments = await Department.findAllActive();
-
-      return res.status(500).render("index", {
-        user: req.session.user,
-        page: "pages/admin/user-create",
-        roles,
-        departments,
-        formData,
-        error: "Nie udało się utworzyć użytkownika.",
-      });
-    }
-    catch {
-      return res.status(500).render("index", {
-        user: req.session.user,
-        page: "partials/error",
-        message: "Nie udało się utworzyć użytkownika.",
-      });
-    }
+    return await renderUserCreateForm(res, res, 500, {
+      formData: req.body,
+      error: error.message || "Nie udało się utworzyć użytkownika.",
+    });
   }
 };
 
 exports.postUserEdit = async (req, res) => {
-  const errors = validationResult(req);
-  const userId = req.params.id;
-
-  const {
-    firstName,
-    lastName,
-    email,
-    phone,
-    roleId,
-    departmentId,
-    isActive,
-  } = req.body;
-
   try {
-    const roles = await Role.findAllActive();
-    const departments = await Department.findAllActive();
-
-    const editedUser = await User.findByIdWithDetails(userId);
-
-    if (!editedUser) {
-      return res.status(404).render("index", {
-        user: req.session.user,
-        page: "partials/error",
-        message: "Nie znaleziono użytkownika.",
-      });
-    }
-
-    if (!errors.isEmpty()) {
-      return res.status(422).render("index", {
-        user: req.session.user,
-        page: "pages/admin/user-edit",
-        editedUser: {
-          ...editedUser,
-          first_name: firstName,
-          last_name: lastName,
-          email,
-          phone,
-          role_id: roleId,
-          department_id: departmentId,
-          is_active: isActive,
-        },
-        roles,
-        departments,
-        error: errors.array()[0].msg,
-      });
-    }
-
-    const existingUser = await User.findByEmail(email);
-
-    if (existingUser && Number(existingUser.id) !== Number(userId)) {
-      return res.status(409).render("index", {
-        user: req.session.user,
-        page: "pages/admin/user-edit",
-        editedUser: {
-          ...editedUser,
-          first_name: firstName,
-          last_name: lastName,
-          email,
-          phone,
-          role_id: roleId,
-          department_id: departmentId,
-          is_active: isActive,
-        },
-        roles,
-        departments,
-        error: "Inny użytkownik ma już taki adres e-mail.",
-      });
-    }
-
-    await User.updateByAdmin(userId, {
-      firstName,
-      lastName,
-      email,
-      phone,
-      roleId,
-      departmentId,
-      isActive,
-    });
+    const userId = req.params.id;
+    await userService.updateUserByAdmin(userId, req.body);
 
     return res.redirect("/users");
-  }
-  catch (error) {
-    console.error("Błąd edycji użytkownika:", error);
 
-    return res.status(500).render("index", {
-      user: req.session.user,
-      page: "partials/error",
-      message: "Nie udało się zapisać zmian użytkownika.",
+  } catch (error) {
+    console.error(error.message);
+
+    return await renderUserEditForm(req, res, error.status || 500, {
+      error: error.message || "Nie udało się edytować użytkownika.",
+      page: error.status === 409 ? "pages/admin/user-edit" : "partials/error",
+      editedUser: error.data || null,
+      message: error.message || "Nie udało się pobrać danych do formularza edycji użytkownika.",
     });
   }
 };
 
 exports.postUserResetPassword = async (req, res) => {
-  const userId = req.params.id;
-
   try {
-    const editedUser = await User.findByIdWithDetails(userId);
+    const userId = req.params.id;
+    const result = await userService.resetPassword(req.params.id);
 
-    if (!editedUser) {
+    return await renderUserEditForm(req, res, 200, {
+      editedUser: result,
+      page: "pages/admin/user-reset-password",
+      temporaryPassword: result.temporaryPassword,
+    });
+
+  } catch (error) {
+    if (error.status === 404) {
       return res.status(404).render("index", {
         user: req.session.user,
         page: "partials/error",
@@ -397,18 +237,6 @@ exports.postUserResetPassword = async (req, res) => {
       });
     }
 
-    const temporaryPassword = generateTemporaryPassword(12);
-
-    await User.resetPassword(userId, temporaryPassword);
-
-    return res.render("index", {
-      user: req.session.user,
-      page: "pages/admin/user-reset-password",
-      editedUser,
-      temporaryPassword,
-    });
-  }
-  catch (error) {
     console.error("Błąd resetowania hasła:", error);
 
     return res.status(500).render("index", {
@@ -417,7 +245,7 @@ exports.postUserResetPassword = async (req, res) => {
       message: "Nie udało się zresetować hasła użytkownika.",
     });
   }
-};
+}
 
 exports.postTicketReply = (req, res) => {
   const action = req.body.action;
