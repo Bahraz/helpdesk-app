@@ -1,0 +1,77 @@
+<%
+  const priorityLabels = {
+    'low': 'Niski',
+    'medium': 'Średni',
+    'high': 'Wysoki',
+    'critical': 'Krytyczny'
+  };
+
+  const statusLabels = {
+    'new': 'Nowy',
+    'in_progress': 'W toku',
+    'resolved': 'Rozwiązany',
+    'waiting_for_requestor': 'Oczekiwanie',
+    'closed': 'Zamknięty'
+  };
+%>
+<main class="container">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>Moje <span class="highlight">Zgłoszenia</span></h2>
+    <a href="/tickets/create" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nowe zgłoszenie</a>
+  </div>
+
+  <div class="card table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th><i class="fa-solid fa-hashtag"></i> ID</th>
+          <th><i class="fa-regular fa-file-lines"></i> Temat</th>
+          <th><i class="fa-solid fa-flag"></i> Priorytet</th>
+          <th><i class="fa-solid fa-circle-info"></i> Status</th>
+          <th><i class="fa-regular fa-clock"></i> Data</th>
+          <th style="text-align: center;">Akcja</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (typeof tickets !== 'undefined' && tickets.length > 0) { %>
+          <% tickets.forEach(ticket => { %>
+            <tr>
+              <td>#<%= ticket.id %></td>
+              <td style="font-weight: 500;"><%= ticket.title %></td>
+              <td>
+                <span class="priority-badge priority-<%= ticket.priority %>">
+                  <i class="fa-solid fa-flag"></i>
+                  <%= priorityLabels[ticket.priority] || ticket.priority %>
+                </span>
+              </td>
+              <td>
+                <span class="status-badge status-<%= ticket.status %>">
+                  <% if (ticket.status === 'new') { %> <i class="fa-solid fa-plus"></i>
+                  <% } else if (ticket.status === 'in_progress') { %> <i class="fa-solid fa-spinner fa-spin"></i>
+                  <% } else if (ticket.status === 'resolved') { %> <i class="fa-solid fa-check"></i>
+                  <% } else if (ticket.status === 'waiting_for_requestor') { %> <i class="fa-solid fa-user-clock"></i>
+                  <% } else { %> <i class="fa-solid fa-check"></i> <% } %>
+                  <%= statusLabels[ticket.status] || ticket.status.replace(/_/g, ' ') %>
+                </span>
+              </td>
+              <td class="text-muted" style="font-size: 0.9rem;">
+                <%= new Date(ticket.created_at).toLocaleDateString('pl-PL') %>
+              </td>
+              <td style="text-align: center;">
+                <a href="/tickets/details/<%= ticket.id %>" class="btn btn-outline btn-sm">
+                  <i class="fa-regular fa-eye"></i> Szczegóły
+                </a>
+              </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" style="padding: 3rem; text-align: center; color: var(--text-muted);">
+              Brak zgłoszeń do wyświetlenia.
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</main>
