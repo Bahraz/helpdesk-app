@@ -1,4 +1,4 @@
-const Ticket = require("../models/Ticket.js");
+const Ticket = require("../models/ticket.model.js");
 
 class TicketRepository {
     async getTickets(filters) {

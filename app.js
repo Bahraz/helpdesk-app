@@ -4,9 +4,9 @@ const express = require("express");
 const session = require("express-session");
 const path = require("path");
 
-const authRoutes = require("./routes/authRoutes");
-const ticketRoutes = require("./routes/ticketRoutes");
-const indexRoutes = require("./routes/indexRoutes");
+const authRoutes = require("./routes/auth.routes");
+const ticketRoutes = require("./routes/ticket.routes");
+const indexRoutes = require("./routes/index.routes");
 const userRoutes = require("./routes/user.routes");
 
 const app = express();

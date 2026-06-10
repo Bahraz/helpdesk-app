@@ -1,5 +1,5 @@
-const Role = require("../models/role");
-const Department = require("../models/department");
+const Role = require("../models/role.model");
+const Department = require("../models/department.model");
 
 async function renderUserCreateForm(res, req, status = 200, options = {}) {
     const roles = await Role.findAllActive();

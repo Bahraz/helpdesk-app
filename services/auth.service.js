@@ -1,4 +1,4 @@
-const User = require("../models/user1.js");
+const User = require("../models/user.model.js");
 const userRepository = require("../repositories/user.repository.js");
 const bcrypt = require("bcryptjs");
 const { invalidCredentialsError, inactiveAccountError } = require("../helpers/error.helper.js");

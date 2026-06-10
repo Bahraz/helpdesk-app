@@ -1,4 +1,4 @@
-const Comment = require("../models/Comment.js");
+const Comment = require("../models/comment.model.js");
 
 class CommentRepository {
     async getCommentsByTicketId(ticketId) {

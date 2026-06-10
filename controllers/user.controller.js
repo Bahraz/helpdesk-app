@@ -1,6 +1,6 @@
-const Role = require("../models/Role");
-const Department = require("../models/Department");
-const User = require("../models/User");
+const Role = require("../models/role.model");
+const Department = require("../models/department.model");
+const User = require("../models/user.model");
 const {
     renderUserCreateForm,
     renderUserEditForm

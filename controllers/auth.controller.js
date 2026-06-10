@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
-const User = require("../models/User");
+const User = require("../models/user.model");
 const authService = require("../services/auth.service");
 const { mapSessionUser } = require("../helpers/data.helper");
 
