@@ -10,10 +10,12 @@ class Ticket extends Model {
         id: { required: false },
         title: { required: true },
         description: { required: false, default: null },
-        status: { required: true, default: "new" },
+        status: { required: false, default: "new" },
         priority: { required: true, default: "medium" },
         requestor_id: { required: true },
         agent_id: { required: false, default: null },
+        created_at: { required: false, default: new Date() },
+        updated_at: { required: false, default: new Date() }
     }
 }
 

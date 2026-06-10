@@ -1,13 +1,8 @@
-<%
-  const mockTickets = [
-    { id: 98, tytul: "Konfiguracja konta VPN", opis: "Proszę o utworzenie dostępu VPN dla nowego pracownika.", status: "W toku", tworca_nazwa: "Jan Kaczmarek", czas_zalozenia: "15:40, Wczoraj" },
-    { id: 95, tytul: "Licencja na oprogramowanie", opis: "Potrzebuję nowej licencji na Adobe CC.", status: "W toku", tworca_nazwa: "Ewa Dąbrowska", czas_zalozenia: "11:20, Wczoraj" }
-  ];
-%>
+
 <main style="padding: 4rem 12.5%; min-height: 80vh;">
   <h2 style="margin-bottom: 2rem;">Zgłoszenia pod Twoją obsługą</h2>
   <div class="ticket-grid">
-    <% mockTickets.forEach(ticket => { %>
+    <% tickets.forEach(ticket => { %>
       <%- include('../../partials/ticket-card', { ticket: ticket, type: 'active' }) %>
     <% }) %>
   </div>

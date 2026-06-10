@@ -1,13 +1,8 @@
-<%
-  const mockTickets = [
-    { id: 90, tytul: "Brak internetu", opis: "Switch na 3 piętrze został zresetowany, internet już działa.", status: "Zakończone", tworca_nazwa: "Biuro", czas_zalozenia: "Wtorek" },
-    { id: 85, tytul: "Dostęp do GitHuba", opis: "Uprawnienia zostały nadane.", status: "Zakończone", tworca_nazwa: "Dev Team", czas_zalozenia: "Poniedziałek" }
-  ];
-%>
+
 <main style="padding: 4rem 12.5%; min-height: 80vh;">
   <h2 style="margin-bottom: 2rem;">Archiwum zgłoszeń</h2>
   <div class="ticket-grid">
-    <% mockTickets.forEach(ticket => { %>
+    <% tickets.forEach(ticket => { %>
       <%- include('../../partials/ticket-card', { ticket: ticket, type: 'closed' }) %>
     <% }) %>
   </div>

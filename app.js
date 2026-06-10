@@ -7,6 +7,7 @@ const path = require("path");
 const authRoutes = require("./routes/authRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
 const indexRoutes = require("./routes/indexRoutes");
+const userRoutes = require("./routes/user.routes");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(
 
 app.use("/auth", authRoutes);
 app.use("/tickets", ticketRoutes);
+app.use("/users", userRoutes);
 app.use("/", indexRoutes);
 
 app.use((req, res) => {

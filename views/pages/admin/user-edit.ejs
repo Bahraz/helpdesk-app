@@ -16,7 +16,7 @@
       </div>
     <% } %>
 
-    <form action="/admin/user/edit/<%= editedUser.id %>" method="POST">
+    <form action="/users/edit/<%= editedUser.id %>" method="POST">
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
         <div class="form-group">
           <label for="firstName">Imię</label>
@@ -121,7 +121,7 @@
 
       <div style="display: flex; gap: 1rem; margin-top: 2rem">
         <a
-          href="/admin/users/reset-password/<%= editedUser.id %>"
+          href="/users/reset-password/<%= editedUser.id %>"
           class="btn btn-outline"
           style="
             flex: 1;

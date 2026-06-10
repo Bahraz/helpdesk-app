@@ -21,7 +21,7 @@
   </div>
 
   <div class="card table-container">
-    <table class="data-table">
+    <table class="custom-table">
       <thead>
         <tr>
           <th><i class="fa-solid fa-hashtag"></i> ID</th>
@@ -37,7 +37,7 @@
           <% tickets.forEach(ticket => { %>
             <tr>
               <td>#<%= ticket.id %></td>
-              <td style="font-weight: 500;"><%= ticket.title %></td>
+              <td style="font-weight: 500;"><%= ticket.ticket_title %></td>
               <td>
                 <span class="priority-badge priority-<%= ticket.priority %>">
                   <i class="fa-solid fa-flag"></i>
@@ -55,10 +55,10 @@
                 </span>
               </td>
               <td class="text-muted" style="font-size: 0.9rem;">
-                <%= new Date(ticket.created_at).toLocaleDateString('pl-PL') %>
+                <%= ticket.created_at %>
               </td>
               <td style="text-align: center;">
-                <a href="/tickets/details/<%= ticket.id %>" class="btn btn-outline btn-sm">
+                <a href="/tickets/<%= ticket.id %>" class="btn btn-outline btn-sm">
                   <i class="fa-regular fa-eye"></i> Szczegóły
                 </a>
               </td>

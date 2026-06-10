@@ -81,6 +81,75 @@ async function initializeDB() {
       ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
     `);
 
+    await db.execute(`
+      create or replace view v_tickets as
+        select
+          t.id,
+          t.title as ticket_title,
+          t.description as ticket_description,
+            t.status,
+            t.priority,
+
+          ur.id as requestor_id,
+          ur.first_name as requestor_first_name,
+          ur.last_name as requestor_last_name,
+          ur.email as requestor_email,
+
+          ua.id as agent_id,
+          ua.first_name as agent_first_name,
+          ua.last_name as agent_last_name,
+          ua.email as agent_email,
+
+          t.created_at,
+          t.updated_at
+        from tickets as t
+        left join users as ur
+          on t.requestor_id = ur.id
+        left join users as ua
+          on t.agent_id = ua.id
+      `)
+
+    await db.execute(`
+      create or replace view v_comments as
+      select
+        c.id,
+        c.ticket_id,
+        c.user_id,
+        u.first_name as user_first_name,
+        u.last_name as user_last_name,
+        r.name as role,
+        u.email as user_email,
+        c.comment,
+        c.created_at
+      from comments as c
+      left join users as u
+        on c.user_id = u.id
+      left join roles as r
+        on u.role_id = r.id;
+      `)
+
+    await db.execute(`
+      create or replace view v_users as
+      select
+      u.id,
+      u.first_name,
+      u.last_name,
+      u.email,
+      u.phone,
+      u.last_login_at,
+      u.role_id,
+      u.department_id,
+      u.password_hash,
+      u.is_active,
+      r.name as role,
+      d.name as department_name
+      from users as u
+      left join roles as r
+        on u.role_id = r.id
+      left join departments as d
+        on u.department_id = d.id;
+    `);
+
     await db.execute(
       "CREATE INDEX ix_tickets_requestor_id ON tickets(requestor_id);",
     );

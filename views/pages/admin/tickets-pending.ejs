@@ -1,14 +1,8 @@
-<%
-  const mockTickets = [
-    { id: 101, tytul: "Brak dostępu do serwera plików", opis: "Po aktualizacji systemu Windows nie mogę połączyć się z dyskiem Z.", priorytet: "Wysoki", tworca_nazwa: "Anna Kowalska", czas_zalozenia: "09:15, Dziś" },
-    { id: 102, tytul: "Wymiana tonera w drukarce", opis: "Drukarka na 2 piętrze zgłasza niski poziom czarnego tonera.", priorytet: "Niski", tworca_nazwa: "Piotr Nowak", czas_zalozenia: "08:30, Dziś" },
-    { id: 100, tytul: "Niedziałający monitor", opis: "Brak zasilania w jednym z monitorów co utrudnia i spowalnia pracę.", priorytet: "Średni", tworca_nazwa: "Kamil Wiśniewski", czas_zalozenia: "Wczoraj" }
-  ];
-%>
+
 <main style="padding: 4rem 12.5%; min-height: 80vh;">
   <h2 style="margin-bottom: 2rem;">Oczekujące zgłoszenia</h2>
   <div class="ticket-grid">
-    <% mockTickets.forEach(ticket => { %>
+    <% tickets.forEach(ticket => { %>
       <%- include('../../partials/ticket-card', { ticket: ticket, type: 'pending' }) %>
     <% }) %>
   </div>

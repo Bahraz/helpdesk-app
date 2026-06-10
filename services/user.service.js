@@ -4,7 +4,7 @@ const { notFoundError, conflictError } = require("../helpers/error.helper.js");
 const bcrypt = require("bcrypt");
 
 class UserService {
-    async createUserByAdmin(data) {
+    async createUser(data) {
         const existingUser = await userRepository.findByEmail(data.email);
 
         if (existingUser)
@@ -25,7 +25,7 @@ class UserService {
         }
     }
 
-    async updateUserByAdmin(userId, data) {
+    async updateUser(userId, data) {
         const user = await userRepository.findById(userId);
 
         if (!user)
@@ -70,6 +70,25 @@ class UserService {
 
     async getUsers() {
         return await userRepository.findAll();
+    }
+
+    async updateUserPassword(userId, currentPassword, newPassword, confirmPassword) {
+        const user = await userRepository.findById(userId);
+        if (!user) {
+            notFoundError("Nie można znaleźć użytkownika o podanym ID.");
+        }
+        const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password_hash);
+        if (!isCurrentPasswordValid) {
+            conflictError("Podane aktualne hasło jest nieprawidłowe.");
+        }
+        if (newPassword !== confirmPassword) {
+            conflictError("Nowe hasło i potwierdzenie hasła nie są zgodne.");
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        await userRepository.resetPassword(userId, hashedPassword);
     }
 }
 

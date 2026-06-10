@@ -16,61 +16,21 @@ class UserRepository {
     }
 
     async findByEmail(email) {
-        const sql = `
-            SELECT
-                u.id,
-                u.first_name,
-                u.last_name,
-                u.email,
-                u.phone,
-                u.password_hash,
-                u.role_id,
-                u.department_id,
-                u.is_active,
-                u.last_login_at,
-                r.name AS role_name,
-                d.name AS department_name
-            FROM users u
-            LEFT JOIN roles r
-                ON r.id = u.role_id
-            LEFT JOIN departments d
-                ON d.id = u.department_id
-            WHERE u.email = ?
-            LIMIT 1
-        `;
-
-        const rows = await User.query(sql, [email]);
-
-        return rows[0] || null;
+        const user = await User.findOne({ where: { email } }, "v_users");
+        console.log("Znaleziony użytkownik:", user);
+        return user || null;
     }
 
     async findAllWithDetails() {
-        const sql = `
-            select
-                u.id,
-                u.first_name,
-                u.last_name,
-                u.email,
-                u.phone,
-                u.role_id,
-                u.department_id,
-                u.is_active,
-                r.name as role_name,
-                d.name as department_name
-            from users u
-            left join roles r on r.id = u.role_id
-            left join departments d on d.id = u.department_id
-            order by u.last_name, u.first_name
-            `;
-
-        const [rows] = await User.query(sql);
-        return rows;
+        const users = await User.find(null, "v_users");
+        return users || [];
     }
 
     async findById(id) {
-        return User.findOne({
+        const user = await User.findOne({
             where: { id }
-        });
+        }, "v_users");
+        return user || null;
     }
 
     async update(id, data) {

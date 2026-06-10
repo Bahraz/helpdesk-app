@@ -22,8 +22,8 @@ function mapSessionUser(user) {
     email: user.email,
     phone: user.phone,
     roleId: user.role_id,
-    roleName: user.role_name,
-    role: mapUserRole(user.role_name),
+    roleName: user.role,
+    role: mapUserRole(user.role),
     departmentId: user.department_id,
     departmentName: user.department_name,
   }

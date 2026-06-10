@@ -1,13 +1,26 @@
-const Ticket = require("../models/ticket.model");
+const Ticket = require("../models/Ticket.js");
 
-class TicketRespository {
+class TicketRepository {
     async getTickets(filters) {
         const tickets = await Ticket.find(
             { where: filters },
-            "tickets_view"
+            "v_tickets"
         );
         return tickets || [];
     }
+
+    async getTicketById(id) {
+        const tickets = await Ticket.find(
+            { where: { id } },
+            "v_tickets"
+        );
+        return tickets[0] || null;
+    }
+
+    async createTicket(data) {
+        const newTicket = await new Ticket(data).create();
+        return newTicket;
+    }
 }
 
-module.exports = new TicketRespository();
+module.exports = new TicketRepository();

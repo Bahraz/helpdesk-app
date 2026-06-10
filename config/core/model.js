@@ -43,8 +43,12 @@ module.exports = class Model {
         const params = [];
 
         for (const key in where) {
-            whereClauses.push(`${key} = ?`);
-            params.push(where[key]);
+            if (where[key] === null) {
+                whereClauses.push(`${key} IS NULL`);
+            } else {
+                whereClauses.push(`${key} = ?`);
+                params.push(where[key]);
+            }
         }
 
         return {

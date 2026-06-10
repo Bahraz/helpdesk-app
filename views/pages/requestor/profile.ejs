@@ -24,7 +24,7 @@
         </div>
       <% } %>
 
-      <form action="/profile" method="POST" style="margin-top: 2rem">
+      <form action="/users/profile" method="POST" style="margin-top: 2rem">
         <!-- Sekcja: Dane podstawowe -->
         <h4 class="dashboard-section-title" style="font-size: 1.1rem; margin-bottom: 1rem;">Dane kontaktowe</h4>
         
@@ -34,7 +34,7 @@
             class="form-control"
             style="background: rgba(255, 255, 255, 0.05); cursor: default"
           >
-            <%= user.firstName %> <%= user.lastName %>
+            <%= user.first_name %> <%= user.last_name %>
           </div>
         </div>
 
@@ -58,7 +58,7 @@
                 class="fa-solid fa-building"
                 style="margin-right: 8px; color: var(--primary-color)"
               ></i>
-              <%= user.departmentName || 'Brak przypisania' %>
+              <%= user.department_name || 'Brak przypisania' %>
             </div>
           </div>
         </div>

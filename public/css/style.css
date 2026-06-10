@@ -152,14 +152,17 @@ body {
 }
 
 .badge {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   padding: 0.25rem 0.75rem;
   background: rgba(14, 165, 233, 0.1);
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   border-radius: 20px;
   font-size: 0.8rem;
-  font-weight: 600;
+  
   margin-bottom: 1.5rem;
 }
 
@@ -291,7 +294,11 @@ body {
   border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 600;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .priority-badge {
@@ -635,6 +642,7 @@ body {
   flex-direction: column;
   gap: 1.5rem;
   margin-bottom: 3rem;
+  width: 100%;
 }
 
 .message-card {
@@ -665,11 +673,21 @@ body {
   color: var(--text-muted);
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.5rem;
+  gap: 10px;
 }
 
 .message-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   font-weight: 600;
   color: var(--text-main);
+}
+
+.message-user-icon {
+  margin-right: 15px;
+  color: var(--primary-color);
 }
 
 .message-card.role-admin .message-author {

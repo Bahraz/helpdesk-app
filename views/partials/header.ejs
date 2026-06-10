@@ -5,16 +5,16 @@
     <nav class="nav-links">
       <% if (typeof user !== 'undefined' && user) { %>
         <% if (user.role === 'admin') { %>
-          <a href="/tickets/pending">Oczekujące</a>
-          <a href="/tickets/active">Przyjęte</a>
-          <a href="/tickets/closed">Zamknięte</a>
+          <a href="/tickets?status=new">Oczekujące</a>
+          <a href="/tickets?status=in_progress">Przyjęte</a>
+          <a href="/tickets?status=closed">Zamknięte</a>
           <a href="/users">Użytkownicy</a>
-          <a href="/logout" class="btn btn-outline">Wyloguj</a>
-        <% } else if (user.role === 'user') { %>
-          <a href="/#">Utwórz zgłoszenie</a>
-          <a href="/#">Moje zgłoszenia</a>
-          <a href="/#">Mój profil</a>
-          <a href="/logout" class="btn btn-outline">Wyloguj</a>
+          <a href="/auth/logout" class="btn btn-outline">Wyloguj</a>
+        <% } else if (user.role === 'requestor') { %>
+          <a href="/tickets/create">Utwórz zgłoszenie</a>
+          <a href="/tickets">Moje zgłoszenia</a>
+          <a href="/users/profile">Mój profil</a>
+          <a href="/auth/logout" class="btn btn-outline">Wyloguj</a>
         <% } %>
       <% } else { %>
         <a href="#function">Jak to działa</a>
