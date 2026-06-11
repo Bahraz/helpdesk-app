@@ -54,7 +54,7 @@
         <textarea name="comment" class="form-control" placeholder="Wpisz treść swojej odpowiedzi... Jeśli to Twoja ostatnia czynność, kliknij Zamknij zgłoszenie." required></textarea>
       </div>
       <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1rem;">
-        <% if (user.role === "Admin") { %>
+        <% if (user.role === "admin") { %>
            <button type="submit" name="action" value="close" class="btn btn-outline" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">
              <i class="fa-solid fa-lock"></i> Zamknij zgłoszenie
            </button>

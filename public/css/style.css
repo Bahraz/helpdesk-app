@@ -162,7 +162,7 @@ body {
   border: 1px solid var(--primary-color);
   border-radius: 20px;
   font-size: 0.8rem;
-  
+
   margin-bottom: 1.5rem;
 }
 
@@ -698,6 +698,12 @@ body {
   font-size: 0.95rem;
   line-height: 1.6;
   white-space: pre-wrap; /* Zachowuje entery w tekście */
+}
+
+/* Sekcja kontenera dla stron z tabelami i listami */
+.container {
+  padding: 4rem 12.5%;
+  min-height: 70vh;
 }
 
 /* Tabele (Profil i Zarządzanie) */

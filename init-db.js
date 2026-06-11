@@ -107,7 +107,7 @@ async function initializeDB() {
           on t.requestor_id = ur.id
         left join users as ua
           on t.agent_id = ua.id
-      `)
+      `);
 
     await db.execute(`
       create or replace view v_comments as
@@ -126,7 +126,7 @@ async function initializeDB() {
         on c.user_id = u.id
       left join roles as r
         on u.role_id = r.id;
-      `)
+      `);
 
     await db.execute(`
       create or replace view v_users as
@@ -185,46 +185,59 @@ async function initializeDB() {
 
     await db.execute(`
       INSERT INTO tickets (title, description, priority, status, agent_id, requestor_id) VALUES
-      ('Problem z logowaniem do systemu ERP', 'Wywala błąd 500 przy próbie logowania.', 'high', 'new', NULL, 3),
-      ('Brak tonera w drukarce', 'Drukarka na 2 piętrze woła o nowy toner.', 'medium', 'in_progress', 1, 4),
-      ('Awaria głównego serwera!', 'Nikt nie ma dostępu do dysku sieciowego.', 'critical', 'resolved', 2, 5),
-      ('Nowa myszka bezprzewodowa', 'Proszę o zamówienie nowej myszki, stara przerywa.', 'low', 'waiting_for_requestor', 1, 6),
-      ('Aktualizacja oprogramowania', 'Czy planujecie wgrać nowy update w tym tygodniu?', 'low', 'new', NULL, 3),
-      ('Zepsuty monitor na stanowisku', 'Ekran miga i gaśnie po kilku minutach pracy.', 'medium', 'in_progress', 2, 3),
-      ('Dostęp do folderu HR', 'Proszę o nadanie uprawnień do folderu rekrutacji.', 'medium', 'closed', 1, 4),
-      ('Brak internetu na hali', 'Od rana nie mamy dostępu do sieci na magazynie.', 'high', 'new', NULL, 5),
-      ('Zmiana nazwiska w systemie', 'Wyszłam za mąż, proszę o aktualizację danych.', 'low', 'waiting_for_requestor', 2, 6),
-      ('Klawiatura zalana kawą', 'Niestety wypadki się zdarzają... spacja nie działa.', 'low', 'resolved', 1, 3),
-      ('Prośba o nowy telefon służbowy', 'Bateria w starym trzyma tylko godzinę.', 'low', 'new', NULL, 4),
-      ('Konfiguracja VPN', 'Potrzebuję dostępu z domu na jutro.', 'medium', 'in_progress', 1, 5),
-      ('Błąd przy generowaniu raportu', 'System zawiesza się przy generowaniu zestawienia.', 'high', 'in_progress', 2, 6),
-      ('Klimatyzacja w serwerowni', 'Temperatura niebezpiecznie rośnie, alarm pika!', 'critical', 'resolved', 1, 5),
-      ('Zablokowane konto domenowe', '3 razy wpisałem złe hasło i mnie zablokowało.', 'high', 'new', NULL, 3);
+      ('Problem z logowaniem do VPN', 'Nie mogę połączyć się z siecią firmową z domu. Wyrzuca błąd limitu czasu.', 'high', 'new', NULL, 2),
+      ('Brak dostępu do folderu współdzielonego', 'Proszę o nadanie uprawnień do katalogu /Finanse dla nowego projektu.', 'medium', 'new', NULL, 3),
+      ('Myszka komputerowa przestała działać', 'Myszka bezprzewodowa nie reaguje, wymiana baterii nie pomogła. Proszę o nową.', 'low', 'new', NULL, 4),
+      ('Błąd 500 przy generowaniu raportu', 'Podczas próby pobrania raportu rocznego system zawiesza się i zwraca błąd 500.', 'high', 'new', NULL, 5),
+      ('Konfiguracja skrzynki pocztowej na telefonie', 'Potrzebuję instrukcji lub pomocy przy ustawieniu maila służbowego na Androidzie.', 'low', 'new', NULL, 6),
+      ('Wymiana tonera w drukarce na 2. piętrze', 'Kończy się czarny toner w drukarce departamentowej. Zaczynają pojawiać się smugi.', 'medium', 'new', NULL, 3),
+      ('Nowy pracownik - założenie konta', 'Od poniedziałku dołącza do nas nowa osoba. Proszę o przygotowanie konta w systemie.', 'high', 'new', NULL, 4),
+      ('Prośba o instalację oprogramowania Docker', 'Potrzebuję środowiska Docker do lokalnych testów aplikacji.', 'medium', 'new', NULL, 2),
+      ('Niestabilne działanie Wi-Fi w sali konferencyjnej', 'Podczas spotkań często zrywa połączenie z siecią "Firma_Guest".', 'medium', 'new', NULL, 5),
+      ('Aktualizacja danych w profilu pracownika', 'Proszę o zmianę mojego nazwiska w systemie kadrowym po ślubie.', 'low', 'new', NULL, 6),
+      ('Reset hasła do systemu domenowego', 'Zapomniałem hasła po urlopie, proszę o wygenerowanie tymczasowego.', 'high', 'in_progress', 1, 3),
+      ('Zakup licencji JetBrains', 'Prośba o przedłużenie licencji na środowisko programistyczne.', 'medium', 'in_progress', 1, 2),
+      ('Monitor mruga podczas pracy', 'Główny monitor od stacji dokującej co kilka minut gaśnie na sekundę.', 'medium', 'new', 1, 5),
+      ('Wniosek o dostęp do bazy PostgreSQL', 'Potrzebuję uprawnień do odczytu bazy produkcyjnej na potrzeby migracji.', 'high', 'in_progress', 1, 2),
+      ('Komputer wolno działa (prawdopodobnie wirus)', 'System bardzo zwolnił, wyskakują dziwne powiadomienia w przeglądarce.', 'high', 'in_progress', 1, 4),
+      ('Konfiguracja drugiego monitora', 'Otrzymałem dodatkowy monitor, ale system go nie wykrywa. Proszę o wsparcie.', 'low', 'resolved', 1, 6),
+      ('Blokada konta po wpisaniu błędnego PINu', 'Konto zostało zablokowane po trzech nieudanych próbach logowania.', 'high', 'resolved', 1, 3),
+      ('Przeniesienie stanowiska komputerowego', 'Prośba o przepięcie sprzętu (komputer, 2 monitory, telefon) do pokoju 204.', 'medium', 'new', 1, 4),
+      ('Błąd synchronizacji kalendarza', 'Spotkania wpisane w Outlooku nie pojawiają się w aplikacji mobilnej.', 'low', 'in_progress', 1, 5),
+      ('Zgłoszenie uszkodzenia kabla sieciowego', 'Zatrzask w kablu RJ45 przy moim biurku jest ułamany i kabel wypada z karty.', 'low', 'new', 1, 6);
     `);
 
     await db.execute(`
-      INSERT INTO comments (ticket_id, user_id, \`comment\`) VALUES
-      (2, 4, 'Czy wiadomo, kiedy toner zostanie wymieniony? Mamy pilne dokumenty do druku.'),
-      (2, 1, 'Jestem w drodze na 2 piętro, zaraz to załatwię.'),
-      (3, 2, 'Serwer został zrestartowany. Problem był z zawieszonym procesem bazy danych. Zamykam zgłoszenie.'),
-      (4, 1, 'Czy ma to być myszka na Bluetooth, czy ze zwykłym adapterem USB?'),
-      (4, 6, 'Najlepiej na Bluetooth, mam mało portów w laptopie. Dzięki!'),
-      (6, 2, 'Jaki to model monitora? Podejdę z zamiennikiem.'),
-      (6, 3, 'To ten stary Dell 24 cale.'),
-      (6, 2, 'Ok, zaraz będę.'),
-      (7, 4, 'Proszę o szybkie załatwienie, mam dziś rozmowy rekrutacyjne.'),
-      (7, 1, 'Uprawnienia nadane. Proszę przelogować się do systemu.'),
-      (7, 4, 'Działa, dziękuję!'),
-      (9, 2, 'Gratulacje! Proszę jednak o przesłanie skanu dokumentu z HR do weryfikacji.'),
-      (10, 3, 'Tylko proszę nie mówić szefowi...'),
-      (10, 1, 'Wydano nową klawiaturę z magazynu IT. Stara poszła do utylizacji. Bez obaw, tajemnica zawodowa ;)'),
-      (12, 1, 'Instrukcja konfiguracji i certyfikaty wysłane na maila. Proszę dać znać, czy działa.'),
-      (12, 5, 'Niestety przy próbie łączenia wyskakuje błąd 403.'),
-      (13, 6, 'Pojawia się komunikat o braku pamięci (Out of memory).'),
-      (13, 2, 'Sprawdzam logi serwera. Wygląda na zapętlone zapytanie do bazy, zabiję proces i zobaczymy.'),
-      (14, 5, 'Ratunku, zaraz się ugotujemy!'),
-      (14, 1, 'Zgłoszono do serwisu zewnętrznego, będą za 15 minut.'),
-      (14, 1, 'Serwis naprawił wyciek chłodziwa. Temperatura wraca do normy. Dobrze, że szybko daliście znać.');
+    INSERT INTO comments (ticket_id, user_id, \`comment\`) VALUES
+    (11, 1, 'Cześć Jan, wygenerowałem nowe hasło tymczasowe: Start123!. Przy pierwszym logowaniu system wymusi jego zmianę.'),
+    (11, 3, 'Dzięki, ale dostaję komunikat, że hasło nie spełnia wymogów złożoności. Możesz zerknąć?'),
+    (11, 1, 'Mój błąd, zapomniałem o nowej polityce. Spróbuj teraz: BezpieczneHaslo2026!'),
+    (11, 3, 'Teraz przeszło bez problemu. Wielkie dzięki za szybką pomoc, można zamykać.'),
+    (12, 1, 'Wniosek o licencję został przekazany do działu zakupów. Czekam na akceptację budżetu.'),
+    (12, 2, 'Jasne, daj znać jak tylko dostaniesz klucz, bo stara licencja wygasa mi pojutrze.'),
+    (12, 1, 'Dyrektor podbił budżet. Przesłałem zamówienie do dystrybutora, klucze powinny być jutro rano.'),
+    (13, 1, 'Piotr, czy sprawdzałeś inne gniazdo w stacji dokującej? Często to wina uszkodzonego kabla DisplayPort.'),
+    (13, 5, 'Tak, przepiąłem do drugiego portu i dalej to samo. Podłączyłem też bezpośrednio do HDMI w laptopie i wtedy działa stabilnie.'),
+    (13, 1, 'W takim razie winna jest sama stacja dokująca albo jej zasilacz. Podejdę do Ciebie po południu z nową stacją na podmianę.'),
+    (14, 1, 'Do jakich konkretnie schematów potrzebujesz dostępu? Standardowo na prodzie dajemy tylko read-only do schematu public.'),
+    (14, 2, 'Dokładnie tak, potrzebuję tylko odczytu (SELECT) do schematów "public" oraz "orders" na potrzeby weryfikacji danych przed migracją.'),
+    (14, 1, 'Dostęp został nadany. Uprawnienia wygasną automatycznie za 14 dni.'),
+    (15, 1, 'Marta, odłącz natychmiast komputer od sieci Wi-Fi i kablowej. Zaraz będę u Ciebie na stanowisku.'),
+    (15, 4, 'Odłączyłam kabel. Komputer strasznie głośno chodzi (wentylatory) i co chwilę wyskakuje okienko z informacją o zablokowanych plikach!'),
+    (15, 1, 'Wygląda na to, że system złapał ransomware. Zabezpieczam dysk, będziemy musieli postawić system od nowa z backupu z zeszłego tygodnia.'),
+    (16, 1, 'Kasia, wejdź w Ustawienia Ekranu (prawy przycisk myszy na pulpicie) i kliknij przycisk "Wykryj". Zobacz czy coś się zmieni.'),
+    (16, 6, 'Kliknęłam, ale system pisze, że nie znaleziono innego ekranu. Monitor jest włączony i świeci się pomarańczowa dioda.'),
+    (16, 1, 'Ok, w takim razie problemem może być przejściówka z USB-C. Przyniosę inną i sprawdzimy.'),
+    (16, 6, 'Super, nowa przejściówka zadziałała od razu! Wszystko super widać, dziękuję.'),
+    (17, 1, 'Konto w Active Directory zostało odblokowane. Licznik nieudanych prób logowania wyczyszczony.'),
+    (17, 3, 'Działa, zalogowałem się. Musiałem pomylić cyfry na klawiaturze numerycznej.'),
+    (18, 4, 'Czy uda się to zrobić w ten piątek po godzinie 15:00? Chciałabym od poniedziałku zacząć już w nowym pokoju.'),
+    (18, 1, 'Piątek po 15:00 mi pasuje. Przygotuj proszę wszystkie drobne rzeczy do kartonów, a ja zajmę się odpięciem i przeniesieniem elektroniki.'),
+    (19, 1, 'Spróbuj usunąć konto służbowe z aplikacji mobilnej, zrestartować telefon i dodać je ponownie.'),
+    (19, 5, 'Zrobiłem tak, ale teraz podczas konfiguracji dostaję błąd uwierzytelniania dwuskładnikowego (MFA).'),
+    (19, 1, 'Muszę zresetować Twoją sesję mobilną w panelu admina. Daj mi 5 minut i spróbuj wygenerować kod ponownie.'),
+    (20, 1, 'Cześć Kasia, zaciąłem dzisiaj nowy wtyk RJ45 na tym kablu przy Twoim biurku. Przetestowałem testerem, sygnał jest idealny.'),
+    (20, 6, 'Potwierdzam, wtyczka już nie wypada i Internet działa o wiele szybciej. Dzięki!');
     `);
 
     console.log("Baza gotowa!");

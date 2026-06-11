@@ -17,44 +17,23 @@ npm run dev
 
 ## TODO (na backendzie)
 
-- Logowanie z (`POST /auth/login`): Weryfikacja e-maila i hasła (bcrypt). Ustawienie `req.session.user`.
-- Wymuszenie zmiany hasła: Sprawdzanie flagi `is_first_login` w tabeli `users`. Jeśli `true`, zablokować dostęp do systemu i przekierować na widok zmiany hasła (w trakcie jeszcze nie ma tego widoku)
-- Wylogowanie (`GET /logout`): Niszczenie sesji i renderowanie `auth/logout-success`.
-- Middleware ochrony tras: Utworzenie middleware sprawdzającego czy user jest zalogowany (`isAuth`) oraz czy ma odpowiednią rolę (`isAdmin`).
+- jak sie kafelki ticketow wyswietlaja to u mnie nie widze tytułów i opisów (ale to widze ze w ticket-card trzeba chyba zmienic z ticket.title na ticket.ticket_title i ticket.description na ticket.ticket_description - zostawiam jak jest bo nie wiem czy Ci nie namieszam)
 
-- Profil Admina (`GET /users`): Pobieranie danych zalogowanego użytkownika oraz pobranie listy wszystkich pracowników z bazy do tabeli.
-- Edycja własnego profilu (`POST /user/update`): Aktualizacja imienia, nazwiska oraz reset hasła jako opcja.
-- Tworzenie konta pracownika (`POST /admin/user/new`): Zapis do bazy, ustawienie `is_first_login = 1` oraz wygenerowanie losowego, tymczasowego hasła. Przekazanie go do widoku `user-create-success`.
-- Edycja pracownika (`POST /admin/user/edit`): Aktualizacja działu, roli oraz statusu `is_active` w bazie.
-- Resetowanie hasła (`GET/POST /admin/users/reset-password`): Wygenerowanie nowego hasła tymczasowego dla wybranego pracownika, aktualizacja bazy, zmiana `is_first_login` na `1` i renderowanie `user-reset-password`.
+- jak jest priorytet low/medium/high to żeby do widoku było przesyłane "Niski", "Średni", "Wysoki" bo interfejs mamy po polsku,
+- tak samo status new,in_progress,resolved to "Nowy", "W trakcie", "Rozwiązany"
 
-- Oczekujące (`GET /tickets/pending`): Pobranie z bazy zgłoszeń z przypisanym statusem nowym (`agent_id IS NULL` lub status 'new').
-- Twoje aktywne (`GET /tickets/active`): Pobranie zgłoszeń przypisanych do zalogowanego admina (`agent_id = req.session.user.id` oraz status w toku).
-- Zamknięte (`GET /tickets/closed`): Pobranie archiwum zgłoszeń (`status = 'closed'` lub `resolved`).
-- Szczegóły zgłoszenia (`GET /tickets/detail/:id`):
-  - Pobranie ticketu o danym ID oraz informacji o autorze (`requestor_id`).
-  - Pobranie wszystkich komentarzy do tego ticketu z tabeli `comments` wraz z ich autorami.
-- Odpowiadanie / Zamykanie (`POST /tickets/:id/reply`):
-  - Odczytanie `req.body.action`.
-  - Jeśli `reply`: Zapis nowego komentarza do tabeli `comments`. (Automatyczne przypisanie `agent_id` do admina, jeśli to pierwsza odpowiedź).
-  - Jeśli `close`: Zmiana statusu ticketa na `closed` lub `resolved` w tabeli `tickets`.
+- user jak dodaje ticket to ma go tworzyć jako new ale nie przypisywać agenta od razu tylku dawać null 
+- dopiero ten admin ktory odpowie pierwszy to go tam przypisze do agent_id i zmieni status na in_progress (sprawdzić to bo miałem wrażenie, że od razu mi admina przypisało)
+
+- jak admin doda treść i kliknie zamknij to komentarz się nie dodaje, a ticket sie nie zamyka (mimo, że jest komunikat o poprawnym zamknięciu) to po odświeżeniu strony nic się nie zmienia -> powinno dodać odpowiedź i wskoczyc status resolved
+
+- w archiwum zgłoszeń powinny wyświetlać sie wszystkie archwialne zgłoszenia tj "resolved", nie wyświetla się nic
 
 
+- dashboard admina może wyświetlać w sumie sekcje (nowe) co robi poprawnie oraz jednocześnie przypisane (czego poprawnie teraz nie robi bo zwraca też te tickety, w których nie udzieli odpowiedzi)
 
+- oczekujace dziala poprawnie (wyswietla tylko te ktore nie maja odpowiedzi czyli status 'new')
 
+- przyjete dziala poprawnie (wyswietla te ktore sa przpisane do agenta)
 
-
-## Baza danych INFO:
-
-Konto administratora (bazowe, tworzone przy inicjacji projektu) - brak rejestracji - konto tworzy tylko administrator systemu dla nowego użytkownika z hasłem jednorazowym. Hasło trzeba zmienić przy pierwszym zalogowaniu więc tabela user może mieć jakiś bool kolumna first_login?
-
-Tabela user
-id, imię, nazwisko, email, hasło_zahashowane, numer_telefonu, dział, rola, first_login [true/false], is_active [true/false] (tylko admini obsługują tickety, brak widoków tworzenia dla adminów)
-
-Tabela ticket
-id, tytuł, opis, priorytet, status, przypisany_admin_id, twórca_id, czas_założenia, czas_aktualizacji
-
-Tabela odpowiedzi
-id, id_ticketa, id_autora, tresc, czas_odpowiedz
-
-
+- przestał działać panel "użytkownicy" przez co nie da się ich przeglądać/dodawać/resetować haseł etc jest błąd serwera przy próbe wejścia
