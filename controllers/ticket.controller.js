@@ -133,7 +133,7 @@ exports.createTicket = async (req, res) => {
       requestor_id: user.id,
     });
 
-    return res.redirect("/tickets"); // ??
+    return res.redirect("/tickets");
   } catch (error) {
 
     console.error(error);

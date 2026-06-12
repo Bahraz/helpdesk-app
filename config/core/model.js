@@ -18,7 +18,6 @@ module.exports = class Model {
                 throw new Error(`Missing required field: ${key}`);
             }
 
-            // pomiń optional bez wartości i bez defaulta
             if (
                 data[key] === undefined &&
                 !config.required &&
@@ -114,10 +113,8 @@ module.exports = class Model {
                 params.push(...whereParams);
             }
 
-            // ORDER BY
             query += this.buildOrderBy(orderBy);
 
-            // LIMIT
             query += this.buildLimit(limit);
 
             console.log('SQL:', query);
@@ -162,7 +159,6 @@ module.exports = class Model {
         }
     }
 
-    // zrobic statyczna
     async update() {
         try {
             const columns = Object.keys(this).filter(key => key !== 'tableName' && key !== 'allowedOrderBy' && key !== 'id');

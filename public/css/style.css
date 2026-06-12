@@ -1,8 +1,7 @@
-/* Zmienne CSS dla łatwego zarządzania motywem */
 :root {
-  --bg-color: #09090b; /* Bardzo ciemny szary/czarny */
+  --bg-color: #09090b; 
   --surface-color: rgba(24, 24, 27, 0.6);
-  --primary-color: #0ea5e9; /* Neonowy błękit */
+  --primary-color: #0ea5e9;
   --primary-glow: rgba(14, 165, 233, 0.4);
   --text-main: #f8fafc;
   --text-muted: #a1a1aa;
@@ -11,8 +10,8 @@
 }
 
 html {
-  scroll-padding-top: 100px; /* Wysokość nawigacji + około 20px zapasu */
-  scroll-behavior: smooth; /* Efekt płynnego przewijania */
+  scroll-padding-top: 100px; 
+  scroll-behavior: smooth;
 }
 
 * {
@@ -34,7 +33,6 @@ body {
   color: var(--text-muted);
 }
 
-/* Futurystyczne tło - rozmyte światło */
 .ambient-light {
   position: absolute;
   top: -20%;
@@ -51,7 +49,6 @@ body {
   z-index: -1;
 }
 
-/* Nawigacja */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -96,7 +93,6 @@ body {
   color: var(--primary-color);
 }
 
-/* Przyciski */
 .btn {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -145,7 +141,6 @@ body {
   width: 100%;
 }
 
-/* Sekcja Hero */
 .hero {
   display: flex;
   align-items: center;
@@ -221,7 +216,7 @@ body {
   justify-content: flex-end;
 }
 
-/* Glassmorphism Mockup */
+
 .glass-card {
   background: var(--surface-color);
   backdrop-filter: blur(16px);
@@ -319,20 +314,19 @@ body {
 
 .priority-high {
   background: rgba(239, 68, 68, 0.15);
-  color: #ef4444; /* Czerwony */
+  color: #ef4444;
 }
 
 .priority-medium {
   background: rgba(249, 115, 22, 0.15);
-  color: #f97316; /* Pomarańczowy */
+  color: #f97316;
 }
 
 .priority-low {
   background: rgba(234, 179, 8, 0.15);
-  color: #eab308; /* Żółty */
+  color: #eab308;
 }
 
-/* Proces - Jak to działa */
 .process-section {
   padding: 5rem 12.5%;
   text-align: center;
@@ -397,7 +391,7 @@ body {
   opacity: 0.5;
 }
 
-/* Sekcja Funkcje */
+
 .features-section {
   padding: 5rem 12.5%;
   background: rgba(9, 9, 11, 0.4);
@@ -457,7 +451,7 @@ body {
   line-height: 1.6;
 }
 
-/* Sekcja Statystyk */
+
 .stats-section {
   padding: 4rem 12.5%;
   background: var(--bg-color);
@@ -492,7 +486,7 @@ body {
   letter-spacing: 1px;
 }
 
-/* Sekcja Promo (Darmowe) */
+
 .promo-section {
   padding: 6rem 12.5%;
   display: flex;
@@ -551,7 +545,7 @@ body {
   line-height: 1.7;
 }
 
-/* Sekcja Końcowego CTA */
+
 .cta-section {
   padding: 6rem 12.5%;
   text-align: center;
@@ -576,7 +570,7 @@ body {
   margin-inline: auto;
 }
 
-/* Dashboard - Panel */
+
 .dashboard-header {
   margin-bottom: 3rem;
   text-align: left;
@@ -616,7 +610,6 @@ body {
   box-shadow: 0 10px 30px rgba(14, 165, 233, 0.1);
 }
 
-/* Widok szczegółów ticketu - Konwersacja */
 .back-link {
   margin-bottom: 1.5rem;
 }
@@ -705,16 +698,14 @@ body {
 .message-body {
   font-size: 0.95rem;
   line-height: 1.6;
-  white-space: pre-wrap; /* Zachowuje entery w tekście */
+  white-space: pre-wrap;
 }
 
-/* Sekcja kontenera dla stron z tabelami i listami */
 .container {
   padding: 4rem 12.5%;
   min-height: 70vh;
 }
 
-/* Tabele (Profil i Zarządzanie) */
 .table-container {
   background: var(--surface-color);
   border: 1px solid var(--border-color);
@@ -747,7 +738,7 @@ body {
   background: rgba(255, 255, 255, 0.02);
 }
 
-/* Formularze autoryzacji */
+
 .auth-section {
   display: flex;
   justify-content: center;
@@ -852,7 +843,7 @@ textarea.form-control {
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-/* Stopka */
+
 footer {
   text-align: center;
   padding: 2rem;
@@ -862,9 +853,8 @@ footer {
   margin-top: 4rem;
 }
 
-/* RWD - Responsywność dla telefonów */
+
 @media (max-width: 768px) {
-  /* Na mniejszych ekranach zawartość dostaje więcej miejsca */
   .navbar,
   .hero,
   .process-section,
@@ -910,7 +900,7 @@ footer {
   }
 
   .nav-links {
-    display: none; /* W prawdziwej apce dodaj tutaj hamburger menu :) */
+    display: none;
   }
 
   .promo-box {

@@ -23,7 +23,6 @@
   </div>
 
   <div class="conversation-thread">
-    <!-- Główny opis zgłoszenia jako pierwsza wiadomość -->
     <div class="message-card role-user">
       <div class="message-header">
         <span class="message-author"><i class="fa-solid fa-user"></i> <%= ticket.requestor_first_name %> <%= ticket.requestor_last_name %></span>
@@ -32,7 +31,6 @@
       <div class="message-body"><%= ticket.ticket_description %></div>
     </div>
 
-    <!-- Odpowiedzi z bazy -->
     <% comments.forEach(reply => { %>
       <div class="message-card <%= reply.role === 'Admin' ? 'role-admin' : 'role-user' %>">
         <div class="message-header">
@@ -46,7 +44,6 @@
     <% }) %>
   </div>
 
-  <!-- Formularz odpowiedzi -->
   <div class="reply-section">
     <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;"><i class="fa-solid fa-reply"></i> Dodaj odpowiedź</h3>
     <form action="/tickets/<%= ticket.id %>/reply" method="POST">
