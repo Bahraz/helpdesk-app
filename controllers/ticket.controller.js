@@ -42,10 +42,10 @@ exports.getTickets = async (req, res) => {
 
   const tickets = await ticketService.getTickets(filter);
 
-  const componentName = user.role === "requestor" ? "list" : 
-    status === "new" ? "tickets-pending" : 
-    status === "in_progress" ? "tickets-active" : 
-    "tickets-closed";
+  const componentName = user.role === "requestor" ? "list" :
+    status === "new" ? "tickets-pending" :
+      status === "in_progress" ? "tickets-active" :
+        "tickets-closed";
   const page = `pages/${user.role}/${componentName}`;
 
   res.render("index", {
@@ -82,12 +82,7 @@ exports.postTicketReply = async (req, res) => {
   const { action, comment } = req.body;
   const ticketId = req.params.id;
 
-  if (user.role === "admin" && action === "close") {
-    return res.render("index", {
-      user,
-      page: "pages/admin/ticket-close-success",
-    });
-  }
+
 
   const allowed =
     action === "reply" ||
@@ -105,7 +100,14 @@ exports.postTicketReply = async (req, res) => {
     ticket_id: ticketId,
     user_id: user.id,
     comment,
-  });
+  }, user, action);
+
+  if (user.role === "admin" && action === "close") {
+    return res.render("index", {
+      user,
+      page: "pages/admin/ticket-close-success",
+    });
+  }
 
   return res.redirect(`/tickets/${ticketId}`);
 };

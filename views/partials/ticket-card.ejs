@@ -8,30 +8,29 @@ if (type === 'active') {
 }
 
 if (type === 'closed') {
-  cardStyle = 'opacity: 0.8;';
   titleClass += ' is-closed';
 }
 
 if (ticket && ticket.priority) {
-  if (ticket.priority === 'high' || ticket.priority === 'critical') {
+  if (ticket.priority === 'Wysoki' || ticket.priority === 'Krytyczny') {
     priorityClass = 'priority-high';
-  } else if (ticket.priority === 'medium') {
+  } else if (ticket.priority === 'Średni') {
     priorityClass = 'priority-medium';
   }
 }
 %>
 
-<div class="ticket-card" style="<%= cardStyle %>">
+<div class="ticket-card">
   <div class="ticket-meta">
     <span class="ticket-id">#T-<%= ticket.id %></span>
     <span class="ticket-time"><i class="fa-regular fa-clock"></i> <%= ticket.created_at %></span>
   </div>
   
   <div class="<%= titleClass %>">
-    <%= ticket.title %>
+    <%= ticket.ticket_title %>
   </div>
   
-  <div class="ticket-desc"><%= ticket.description %></div>
+  <div class="ticket-desc"><%= ticket.ticket_description %></div>
   
   <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
     <i class="fa-solid fa-user"></i> <%= ticket.requestor_first_name %> <%= ticket.requestor_last_name %>

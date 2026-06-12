@@ -7,7 +7,7 @@
         <% if (user.role === 'admin') { %>
           <a href="/tickets?status=new">Oczekujące</a>
           <a href="/tickets?status=in_progress">Przyjęte</a>
-          <a href="/tickets?status=closed">Zamknięte</a>
+          <a href="/tickets?status=resolved">Zamknięte</a>
           <a href="/users">Użytkownicy</a>
           <a href="/auth/logout" class="btn btn-outline">Wyloguj</a>
         <% } else if (user.role === 'requestor') { %>

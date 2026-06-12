@@ -102,9 +102,12 @@ module.exports = class Model {
             let query = `SELECT * FROM ${viewName || this.options.tableName}`;
             const params = [];
 
-            // WHERE
-            const { clause, params: whereParams } =
+            if (where) {
+                console.log('Applying filters:', where);
+                var { clause, params: whereParams } =
                 this.getWhereClause(where);
+            }
+            
 
             if (clause) {
                 query += ` WHERE ${clause}`;
@@ -215,7 +218,7 @@ module.exports = class Model {
         const result = {};
 
         for (const [key, value] of Object.entries(data)) {
-            if (value === undefined) continue;
+            if (value === undefined || value === null) continue;
 
             if (schemaKeys.includes(key)) {
                 result[key] = value;

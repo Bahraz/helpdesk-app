@@ -29,6 +29,8 @@ function mapSessionUser(user) {
   }
 }
 
+
+
 function mapUserRole(roleName) {
   if (!roleName) {
     return null;
@@ -48,7 +50,25 @@ function mapUserRole(roleName) {
   }
 }
 
+const priorityMap = {
+  low: "Niski",
+  medium: "Średni",
+  high: "Wysoki",
+  critical: "Krytyczny"
+
+}
+
+const statusMap = {
+  new: "Nowy",
+  in_progress: "W trakcie",
+  closed: "Zamknięty",
+  waiting_for_requestor: "Oczekuje na zgłaszającego",
+  resolved: "Rozwiązany"
+}
+
 module.exports = {
   mergeUserFormData,
-  mapSessionUser
+  mapSessionUser,
+  priorityMap,
+  statusMap
 };

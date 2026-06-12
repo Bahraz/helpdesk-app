@@ -22,7 +22,9 @@ class UserRepository {
     }
 
     async findAllWithDetails() {
-        const users = await User.find(null, "v_users");
+        const users = await User.find({
+            orderBy: "id ASC",
+        }, "v_users");
         return users || [];
     }
 
@@ -42,7 +44,7 @@ class UserRepository {
     }
 
     async findAll() {
-        return await User.find();
+        return await User.find({}, "v_users");
     }
 }
 

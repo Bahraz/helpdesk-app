@@ -19,7 +19,7 @@ class AuthService {
         if (!user.is_active)
             inactiveAccountError();
 
-        await userRepository.update(user.id, { last_login: new Date() });
+        await userRepository.update(user.id, { last_login_at: new Date() });
 
         return user;
     }

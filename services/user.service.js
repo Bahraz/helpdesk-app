@@ -2,6 +2,8 @@ const userRepository = require("../repositories/user.repository.js");
 const { generateTemporaryPassword } = require("../helpers/password.helper.js");
 const { notFoundError, conflictError } = require("../helpers/error.helper.js");
 const bcrypt = require("bcrypt");
+const { formatDate } = require("../utils/date.util.js");
+
 
 class UserService {
     async createUser(data) {
@@ -69,7 +71,12 @@ class UserService {
     }
 
     async getUsers() {
-        return await userRepository.findAll();
+        const users = await userRepository.findAllWithDetails();
+        const formattedUsers = users.map(user => ({
+            ...user,
+            last_login_at: user.last_login_at ? formatDate(user.last_login_at) : null
+        }));
+        return formattedUsers;
     }
 
     async updateUserPassword(userId, currentPassword, newPassword, confirmPassword) {

@@ -1,6 +1,5 @@
 const Role = require("../models/role.model");
 const Department = require("../models/department.model");
-const User = require("../models/user.model");
 const {
     renderUserCreateForm,
     renderUserEditForm
@@ -10,7 +9,9 @@ const bcrypt = require("bcrypt");
 
 exports.getUsers = async (req, res) => {
     try {
-        const users = await User.findAllWithDetails();
+        const users = await userService.getUsers();
+
+        console.log("Pobrani użytkownicy:", users[0]);
 
         return res.render("index", {
             user: req.session.user,
@@ -98,7 +99,6 @@ exports.getUserEdit = async (req, res) => {
 
 exports.getUserResetPassword = async (req, res) => {
     try {
-        const editedUser = await userService.findById(req.params.id);
         const result = await userService.resetPassword(req.params.id);
 
         return res.render("index", {
@@ -167,7 +167,7 @@ exports.postUserEdit = async (req, res) => {
 exports.postUserResetPassword = async (req, res) => {
     try {
         const userId = req.params.id;
-        const result = await userService.resetPassword(req.params.id);
+        const result = await userService.resetPassword(userId);
 
         return await renderUserEditForm(req, res, 200, {
             editedUser: result,
@@ -197,13 +197,20 @@ exports.postUserResetPassword = async (req, res) => {
 exports.putUserProfile = async (req, res) => {
     try {
         const user = req.session.user;
-        const { email, phone, currentPassword, newPassword, confirmPassword } = req.body;
+        const {
+            firstName, 
+            lastName, 
+            email, 
+            phone, 
+            currentPassword, 
+            newPassword, 
+            confirmPassword } = req.body;
 
         if (currentPassword || newPassword || confirmPassword) {
             await userService.updateUserPassword(user.id, currentPassword, newPassword, confirmPassword);
         }
 
-        const updatedUser = await userService.updateUser(user.id, { email, phone });
+        const updatedUser = await userService.updateUser(user.id, { email, phone, firstName, lastName });
 
         console.log("Updated user", updatedUser);
 

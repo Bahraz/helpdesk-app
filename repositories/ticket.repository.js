@@ -21,6 +21,10 @@ class TicketRepository {
         const newTicket = await new Ticket(data).create();
         return newTicket;
     }
+
+    async updateTicket(id, data) {
+        return await Ticket.updateById(id, data);
+    }
 }
 
 module.exports = new TicketRepository();
