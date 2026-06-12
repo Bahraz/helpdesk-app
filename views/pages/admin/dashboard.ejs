@@ -15,20 +15,4 @@
       <p style="color: var(--text-muted);">Brak nowych zgłoszeń w systemie.</p>
     <% } %>
   </div>
-
-  <!-- SEKCJA 2: Tickety przypisane do admina -->
-  <h3 class="dashboard-section-title">
-    Twoje przejęte zgłoszenia
-    <span class="badge" style="margin-bottom: 0;"><%= myTickets.length %></span>
-  </h3>
-  
-  <div class="ticket-grid">
-    <% if (myTickets.length > 0) { %>
-      <% myTickets.forEach(ticket => { %>
-        <%- include('../../partials/ticket-card', { ticket: ticket, type: 'active' }) %>
-      <% }) %>
-    <% } else { %>
-      <p style="color: var(--text-muted);">Obecnie nie masz przypisanych do siebie żadnych zgłoszeń.</p>
-    <% } %>
-  </div>
 </main>
