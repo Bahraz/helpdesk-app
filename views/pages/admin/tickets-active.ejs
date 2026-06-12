@@ -1,6 +1,6 @@
 
-<main style="padding: 4rem 12.5%; min-height: 80vh;">
-  <h2 style="margin-bottom: 2rem;">Zgłoszenia pod Twoją obsługą</h2>
+<main class="page-layout">
+  <h2 class="mb-2">Zgłoszenia pod Twoją obsługą</h2>
   <div class="ticket-grid">
     <% tickets.forEach(ticket => { %>
       <%- include('../../partials/ticket-card', { ticket: ticket, type: 'active' }) %>

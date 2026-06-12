@@ -4,21 +4,21 @@
   else if (ticket.priority === 'medium') priorityClass = 'priority-medium';
 %>
 
-<main style="padding: 4rem 12.5%; min-height: 80vh;">
+<main class="page-layout">
   <div class="back-link">
     <a href="/"><i class="fa-solid fa-arrow-left"></i> Wróć do dashboardu</a>
   </div>
 
   <div class="ticket-detail-header">
-    <div class="ticket-meta" style="margin-bottom: 1rem;">
-      <span class="ticket-id" style="font-size: 1.2rem;">#T-<%= ticket.id %></span>
+    <div class="ticket-meta ticket-meta-spaced">
+      <span class="ticket-id">#T-<%= ticket.id %></span>
       <span class="ticket-time"><i class="fa-regular fa-clock"></i> <%= ticket.created_at %></span>
     </div>
-    <h2 style="margin-bottom: 1rem; font-size: 2rem;"><%= ticket.ticket_title %></h2>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <h2 class="ticket-title-heading"><%= ticket.ticket_title %></h2>
+    <div class="flex-gap-wrap">
       <span class="status-badge"><i class="fa-solid fa-spinner"></i> <%= ticket.status %></span>
       <span class="priority-badge <%= priorityClass %>"><i class="fa-solid fa-flag"></i> <%= ticket.priority %></span>
-      <span class="badge" style="background: rgba(255,255,255,0.1); color: var(--text-main); border: 1px solid var(--border-color); margin-bottom: 0;"><i class="fa-solid fa-user"></i> <b>Zgłaszający:</b> <%= ticket.requestor_first_name %> <%= ticket.requestor_last_name  %></span>
+      <span class="badge badge-light"><i class="fa-solid fa-user"></i> <b>Zgłaszający:</b> <%= ticket.requestor_first_name %> <%= ticket.requestor_last_name %></span>
     </div>
   </div>
 
@@ -45,14 +45,14 @@
   </div>
 
   <div class="reply-section">
-    <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;"><i class="fa-solid fa-reply"></i> Dodaj odpowiedź</h3>
+    <h3 class="section-heading"><i class="fa-solid fa-reply"></i> Dodaj odpowiedź</h3>
     <form action="/tickets/<%= ticket.id %>/reply" method="POST">
       <div class="form-group">
         <textarea name="comment" class="form-control" placeholder="Wpisz treść swojej odpowiedzi... Jeśli to Twoja ostatnia czynność, kliknij Zamknij zgłoszenie." required></textarea>
       </div>
-      <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1rem;">
+      <div class="flex-gap-end mt-1">
         <% if (user.role === "admin") { %>
-           <button type="submit" name="action" value="close" class="btn btn-outline" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">
+           <button type="submit" name="action" value="close" class="btn btn-outline btn-outline-danger">
              <i class="fa-solid fa-lock"></i> Zamknij zgłoszenie
            </button>
         <% } %>

@@ -1,8 +1,8 @@
 
-<main style="padding: 4rem 12.5%; min-height: 80vh;">
+<main class="page-layout">
   <h3 class="dashboard-section-title">
     Nowe zgłoszenia (Oczekujące)
-    <span class="badge" style="margin-bottom: 0; background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: #ef4444;"><%= unassignedTickets.length %></span>
+    <span class="badge badge-danger"><%= unassignedTickets.length %></span>
   </h3>
   
   <div class="ticket-grid">
@@ -11,7 +11,7 @@
         <%- include('../../partials/ticket-card', { ticket: ticket, type: 'pending' }) %>
       <% }) %>
     <% } else { %>
-      <p style="color: var(--text-muted);">Brak nowych zgłoszeń w systemie.</p>
-    <% } %>
+      <p class="text-muted">Brak nowych zgłoszeń w systemie.</p>
+      <% } %>
   </div>
 </main>

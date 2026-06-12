@@ -1,23 +1,23 @@
 <main class="auth-section">
-  <div class="auth-card" style="max-width: 600px; text-align: left">
-    <h2 style="text-align: center; margin-bottom: 1.5rem">
+  <div class="auth-card card-medium">
+    <h2 class="text-center mb-1_5">
       Utwórz konto pracownika
     </h2>
 
-    <p style="text-align: center; margin-bottom: 2rem">
+    <p class="text-center mb-2">
       Wygenerowane hasło jednorazowe zostanie wyświetlone na ekranie po
       poprawnym utworzeniu konta.
     </p>
 
     <% if (typeof error !== "undefined" && error) { %>
-      <div style="margin-bottom: 1rem; color: #ef4444; text-align: center;">
+      <div class="alert alert-danger text-center mb-1">
         <i class="fa-solid fa-circle-exclamation"></i>
         <%= error %>
       </div>
     <% } %>
 
     <form action="/users/new" method="POST">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+      <div class="form-grid-2">
         <div class="form-group">
           <label for="firstName">Imię</label>
           <input
@@ -58,14 +58,13 @@
         />
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+      <div class="form-grid-2">
         <div class="form-group">
           <label for="departmentId">Dział</label>
           <select
             id="departmentId"
             name="departmentId"
-            class="form-control"
-            style="appearance: auto"
+            class="form-control select-default"
           >
             <option value="">-- Wybierz dział --</option>
 
@@ -86,8 +85,7 @@
             id="roleId"
             name="roleId"
             required
-            class="form-control"
-            style="appearance: auto"
+            class="form-control select-default"
           >
             <option value="">-- Wybierz rolę --</option>
 
@@ -103,25 +101,15 @@
         </div>
       </div>
 
-      <div class="form-group" style="margin-top: 2rem">
-        <button type="submit" class="btn btn-primary" style="width: 100%">
+      <div class="form-group mt-2">
+        <button type="submit" class="btn btn-primary btn-wide">
           Zarejestruj i wygeneruj hasło
-          <i
-            class="fa-solid fa-wand-magic-sparkles"
-            style="margin-left: 6px"
-          ></i>
+          <i class="fa-solid fa-wand-magic-sparkles icon-gap-left"></i>
         </button>
       </div>
 
-      <div style="text-align: center">
-        <a
-          href="/users"
-          style="
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-          "
-        >
+      <div class="text-center mt-1">
+        <a href="/users" class="text-link-muted">
           <i class="fa-solid fa-arrow-left"></i> Anuluj i wróć do profilu
         </a>
       </div>

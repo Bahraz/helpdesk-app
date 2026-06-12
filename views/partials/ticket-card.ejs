@@ -32,20 +32,20 @@ if (ticket && ticket.priority) {
   
   <div class="ticket-desc"><%= ticket.ticket_description %></div>
   
-  <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+  <div class="ticket-meta-subtext">
     <i class="fa-solid fa-user"></i> <%= ticket.requestor_first_name %> <%= ticket.requestor_last_name %>
   </div>
   
-  <div class="ticket-footer" style="margin-top: auto;">
+  <div class="ticket-footer">
     <% if (type === 'pending') { %>
       <span class="priority-badge <%= priorityClass %>"><i class="fa-solid fa-flag"></i> <%= ticket.priority %></span>
-      <a href="/tickets/<%= ticket.id %>" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Odpowiedz</a>
+      <a href="/tickets/<%= ticket.id %>" class="btn btn-outline btn-sm">Odpowiedz</a>
     <% } else if (type === 'active') { %>
       <span class="status-badge"><i class="fa-solid fa-spinner"></i> <%= ticket.status %></span>
-      <a href="/tickets/<%= ticket.id %>" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Odpowiedz</a>
+      <a href="/tickets/<%= ticket.id %>" class="btn btn-primary btn-sm">Odpowiedz</a>
     <% } else if (type === 'closed') { %>
-      <span class="badge" style="background: rgba(34, 197, 94, 0.15); color: #22c55e; margin: 0; padding: 0.5rem 1rem;"><i class="fa-solid fa-check"></i> <%= ticket.status %></span>
-      <a href="/tickets/<%= ticket.id %>" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Odpowiedz</a>
+      <span class="badge badge-success"><i class="fa-solid fa-check"></i> <%= ticket.status %></span>
+      <a href="/tickets/<%= ticket.id %>" class="btn btn-outline btn-sm">Odpowiedz</a>
     <% } %>
   </div>
 </div>

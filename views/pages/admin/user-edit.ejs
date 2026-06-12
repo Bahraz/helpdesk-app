@@ -1,23 +1,23 @@
 <main class="auth-section">
-  <div class="auth-card" style="max-width: 600px; text-align: left">
-    <h2 style="text-align: center; margin-bottom: 1.5rem">
+  <div class="auth-card card-medium">
+    <h2 class="text-center mb-1_5">
       Edycja pracownika #<%= editedUser.id %>
     </h2>
 
-    <p style="text-align: center; margin-bottom: 2rem">
+    <p class="text-center mb-2">
       Zmień dane pracownika, przypisz mu nową rolę lub zablokuj dostęp do
       systemu.
     </p>
 
     <% if (typeof error !== "undefined" && error) { %>
-      <div style="margin-bottom: 1rem; color: #ef4444; text-align: center;">
+      <div class="alert alert-danger text-center mb-1">
         <i class="fa-solid fa-circle-exclamation"></i>
         <%= error %>
       </div>
     <% } %>
 
     <form action="/users/edit/<%= editedUser.id %>" method="POST">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+      <div class="form-grid-2">
         <div class="form-group">
           <label for="firstName">Imię</label>
           <input
@@ -55,14 +55,13 @@
         />
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem">
+      <div class="form-grid-3">
         <div class="form-group">
           <label for="departmentId">Dział</label>
           <select
             id="departmentId"
             name="departmentId"
-            class="form-control"
-            style="appearance: auto"
+            class="form-control select-default"
           >
             <option value="">-- Brak działu --</option>
 
@@ -82,8 +81,7 @@
           <select
             id="roleId"
             name="roleId"
-            class="form-control"
-            style="appearance: auto"
+            class="form-control select-default"
             required
           >
             <option value="">-- Wybierz rolę --</option>
@@ -104,8 +102,7 @@
           <select
             id="isActive"
             name="isActive"
-            class="form-control"
-            style="appearance: auto"
+            class="form-control select-default"
             required
           >
             <option value="1" <%= Number(editedUser.is_active) === 1 ? "selected" : "" %>>
@@ -119,41 +116,25 @@
         </div>
       </div>
 
-      <div style="display: flex; gap: 1rem; margin-top: 2rem">
+      <div class="flex-gap mt-2">
         <a
           href="/users/reset-password/<%= editedUser.id %>"
-          class="btn btn-outline"
-          style="
-            flex: 1;
-            color: #eab308;
-            border-color: rgba(234, 179, 8, 0.4);
-            text-align: center;
-            padding: 0.6rem 1rem;
-            font-size: 0.9rem;
-          "
+          class="btn btn-outline btn-outline-warning flex-1 text-center"
         >
           <i class="fa-solid fa-key"></i> Zresetuj hasło
         </a>
 
         <button
           type="submit"
-          class="btn btn-primary"
-          style="flex: 1; padding: 0.6rem 1rem; font-size: 0.9rem"
+          class="btn btn-primary flex-1 btn-sm"
         >
           Zapisz zmiany
-          <i class="fa-solid fa-check" style="margin-left: 6px"></i>
+          <i class="fa-solid fa-check icon-gap-left"></i>
         </button>
       </div>
 
-      <div style="text-align: center; margin-top: 1rem">
-        <a
-          href="/users"
-          style="
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-          "
-        >
+      <div class="text-center mt-1">
+        <a href="/users" class="text-link-muted">
           <i class="fa-solid fa-arrow-left"></i> Anuluj i wróć do profilu
         </a>
       </div>

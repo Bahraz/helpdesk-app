@@ -15,7 +15,7 @@
   };
 %>
 <main class="container">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+  <div class="flex-between mb-2">
     <h2>Moje <span class="highlight">Zgłoszenia</span></h2>
     <a href="/tickets/create" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nowe zgłoszenie</a>
   </div>
@@ -29,7 +29,7 @@
           <th><i class="fa-solid fa-flag"></i> Priorytet</th>
           <th><i class="fa-solid fa-circle-info"></i> Status</th>
           <th><i class="fa-regular fa-clock"></i> Data</th>
-          <th style="text-align: center;">Akcja</th>
+          <th class="table-cell-center">Akcja</th>
         </tr>
       </thead>
       <tbody>
@@ -37,7 +37,7 @@
           <% tickets.forEach(ticket => { %>
             <tr>
               <td>#<%= ticket.id %></td>
-              <td style="font-weight: 500;"><%= ticket.ticket_title %></td>
+              <td class="font-medium"><%= ticket.ticket_title %></td>
               <td>
                 <span class="priority-badge priority-<%= ticket.priority %>">
                   <i class="fa-solid fa-flag"></i>
@@ -54,10 +54,10 @@
                   <%= statusLabels[ticket.status] || ticket.status.replace(/_/g, ' ') %>
                 </span>
               </td>
-              <td class="text-muted" style="font-size: 0.9rem;">
+              <td class="text-muted table-text-small">
                 <%= ticket.created_at %>
               </td>
-              <td style="text-align: center;">
+              <td class="table-cell-center">
                 <a href="/tickets/<%= ticket.id %>" class="btn btn-outline btn-sm">
                   <i class="fa-regular fa-eye"></i> Szczegóły
                 </a>
@@ -66,7 +66,7 @@
           <% }) %>
         <% } else { %>
           <tr>
-            <td colspan="6" style="padding: 3rem; text-align: center; color: var(--text-muted);">
+            <td colspan="6" class="table-empty">
               Brak zgłoszeń do wyświetlenia.
             </td>
           </tr>

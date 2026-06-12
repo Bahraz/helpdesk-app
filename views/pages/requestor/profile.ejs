@@ -1,28 +1,26 @@
-<main class="container" style="padding: 4rem 12.5%; min-height: 70vh">
-  <div style="min-height: auto; padding-top: 2rem; display: flex; justify-content: center;">
-    <div class="auth-card" style="max-width: 700px; text-align: left">
+<main class="page-container">
+    <div class="back-link">
+    <a href="/"><i class="fa-solid fa-arrow-left"></i> Powrót</a>
+  </div>
+  <div class="flex-center pt-2">
+    <div class="auth-card card-wide text-left">
       <h2>Mój <span class="highlight">Profil</span></h2>
       <p>Zaktualizuj swoje dane kontaktowe lub zmień hasło dostępu.</p>
 
-      <% if (error) { %>
+      <% if (typeof error !== 'undefined' && error) { %>
         <div class="alert"><i class="fa-solid fa-triangle-exclamation"></i> <%= error %></div>
       <% } %>
 
-      <% if (success) { %>
-        <div class="alert" style="background: rgba(34, 197, 94, 0.15); color: #22c55e; border-color: rgba(34, 197, 94, 0.3);">
-          <i class="fa-solid fa-check"></i> <%= success %>
-        </div>
+      <% if (typeof success !== 'undefined' && success) { %>
+        <div class="alert alert-success"><i class="fa-solid fa-check"></i> <%= success %></div>
       <% } %>
 
-      <form action="/users/profile" method="POST" style="margin-top: 2rem">
-        <h4 class="dashboard-section-title" style="font-size: 1.1rem; margin-bottom: 1rem;">Dane kontaktowe</h4>
+      <form action="/users/profile" method="POST" class="mt-2">
+        <h4 class="dashboard-section-title">Dane kontaktowe</h4>
         
         <div class="form-group">
           <label>Imię i Nazwisko</label>
-          <div
-            class="form-control"
-            style="background: rgba(255, 255, 255, 0.05); cursor: default"
-          >
+          <div class="form-control form-control-static">
             <%= user.first_name %> <%= user.last_name %>
           </div>
         </div>
@@ -32,21 +30,15 @@
           <input type="email" id="email" name="email" class="form-control" value="<%= user.email %>" required>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem">
+        <div class="form-grid-2">
           <div class="form-group">
             <label for="phone">Telefon</label>
             <input type="text" id="phone" name="phone" class="form-control" value="<%= user.phone || '' %>" placeholder="+48 ...">
           </div>
           <div class="form-group">
             <label>Dział</label>
-            <div
-              class="form-control"
-              style="background: rgba(255, 255, 255, 0.05); cursor: default"
-            >
-              <i
-                class="fa-solid fa-building"
-                style="margin-right: 8px; color: var(--primary-color)"
-              ></i>
+            <div class="form-control form-control-static">
+              <i class="fa-solid fa-building icon-gap-right text-primary"></i>
               <%= user.department_name || 'Brak przypisania' %>
             </div>
           </div>
@@ -54,18 +46,18 @@
 
         <div class="form-group">
           <label>Rola w systemie</label>
-          <span class="status-badge" style="text-transform: capitalize"><%= user.role %></span>
+          <span class="status-badge text-capitalize"><%= user.role %></span>
         </div>
 
-        <h4 class="dashboard-section-title" style="font-size: 1.1rem; margin-top: 2.5rem; margin-bottom: 1rem;">Zmiana hasła</h4>
-        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">Wypełnij poniższe pola tylko, jeśli chcesz zmienić obecne hasło.</p>
+        <h4 class="dashboard-section-title mt-3">Zmiana hasła</h4>
+        <p class="text-muted text-small mb-2">Wypełnij poniższe pola tylko, jeśli chcesz zmienić obecne hasło.</p>
 
         <div class="form-group">
           <label for="currentPassword">Aktualne hasło</label>
           <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="••••••••">
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem">
+        <div class="form-grid-2">
           <div class="form-group">
             <label for="newPassword">Nowe hasło</label>
             <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="Min. 6 znaków">
@@ -76,21 +68,8 @@
           </div>
         </div>
 
-        <div
-          style="
-            margin-top: 3rem;
-            border-top: 1px solid var(--border-color);
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <a
-            href="/logout"
-            style="color: #ef4444; text-decoration: none; font-size: 0.9rem; font-weight: 600;"
-            >Wyloguj się</a
-          >
+        <div class="flex-between border-top pt-2 mt-3">
+          <a href="/auth/logout" class="text-danger text-no-decoration font-medium">Wyloguj się</a>
           <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
         </div>
       </form>
